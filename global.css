@@ -3,3 +3,8 @@ body {
 	margin: 0 auto;
 	width: 80%;
 }
+
+h1 {
+	font-size: 4em;
+	margin: auto;
+}
