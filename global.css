@@ -1,9 +1,17 @@
+
+
 body {
 	font: 1em Arial,sans-serif;
 	margin: 0 auto;
 	width: 80%;
 }
 
-h1 {
-	font-size: 4em;
+#banner {
+	display: flex;
+	align-items: center;
+	font-size: 2em;
 }
+	#logo {
+		margin: 0.5em;
+		height: 4em; width: 4em;
+	}
