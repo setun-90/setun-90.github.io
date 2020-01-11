@@ -6,20 +6,20 @@ body {
 	width: 80%;
 }
 
-@media all and (orientation: portrait) {
 #banner {
 	display: flex;
 	align-items: center;
 	font-size: 2em;
-	flex-direction: column;
 }
-}
+
 @media all and (orientation: landscape) {
 #banner {
-	display: flex;
-	align-items: center;
-	font-size: 2em;
 	flex-direction: row;
+}
+}
+@media all and (orientation: portrait) {
+#banner {
+	flex-direction: column;
 }
 }
 	#logo {
