@@ -23,6 +23,8 @@ body {
 	#logo {
 		height: 4em; width: 4em;
 	}
+	@media all and (orientation: landscape) {
 	#title {
 		margin: auto auto auto 0.5em;
+	}
 	}
