@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>SETUN-90 - Gamma Language Specification</title>
+	<meta charset="utf-8" />
+	<link rel="icon" href="./logo-fill.svg" />
+	<link rel="stylesheet" href="./global.css" />
+</head>
+<body>
+	<div id="banner">
+		<img id="logo" src="./logo-fill.svg" />
+		<h1 id="title">Gamma</h1>
+	</div>
+	<h2>C with fewer bad decisions</h2>
+	<h3>Background</h3>
+	<p>Even though I came up with the language as described in these documents only in November of 2019, the concepts in this language had been rolling around in my mind for the past year or so.</p>
+	<p>Chiefly, the concepts come from the difficulties I observed in developing applications, and to a certain extent systems, in C. In my experience, C's true strength is in striking a balance between efficiency and the expressive power necessary for developing applications in a scalable manner. Alas, C grew out of practice, not theory, and as a result had to be bent into accepting the practices of its users. This is, in my opinion, the origin of many of the design decisions which elicit the most criticism from contemporary application programmers; kernel and embedded programmers, in my experience, come from a different culture that puts itself above programmers' preferences.</p>
+	<p>To put it briefly, the points I took (almost) wholesale from C were:
+	<ul>
+		<li>Type system: except for a few modifications, arrays, pointers and function pointers have practically exact equivalents in Gamma, and constancy works in the same way;</li>
+		<li>Statements: except for minor aesthetic differences, most C statements have direct equivalents;</li>
+	</ul>
+	while the points that I took the liberty of extending were:
+	<ul>
+		<li>Type system: a result qualifier was added, which makes reading from the datum forbidden. This would have use in, say, routines cooperating in cryptographic applications, where the code must not be able to read confidential output;</li>
+		<li>Nested subprograms: a subprogram (function or procedure) can be nested, and obeys the same rules as other local datums (note this does not allow returning subprograms, since returning a subprogram (actually a reference to it) would be the same as returning a pointer to a local datum in C, with resulting undefined behavior);</li>
+		<li>Array values: array parameters and arguments in subprogram calls now conserve their length (i.e. <code>#arr</code> actually returns the length of the array), obviating the need for things like <code>strlen</code>;</li>
+	</ul>
+	the points that I took the liberty of modifying were:
+	<ul>
+		<li>Scoping: datums are defined at subprogram scope by default, like Python, though block scope is still available by labelling statements. This is for initializing locals in conditionals, because datums may not be uninitialized (see below);</li>
+		<li>Behavior: some forms of undefined behavior are eliminated, while others are introduced, for reasons which will be explained.</li>
+	</ul>
+	and the points that I took the liberty of eliminating were:
+	<ul>
+		<li>File inclusion: this is made redundant with the linkage process described, and is also explained in the implementation notes.</li>
+		<li>Implicit conversions: in fact, some (like pointer conversions) are absolutely forbidden, since differing alignments in the source and target types will often result in undefined behavior. For reinterpreting bytes (e.g. the equivalent of <code>*((float*)&i)</code>), use unions - in fact, pointer conversions like that <em>are</em> undefined behavior in C, but union reinterpretations are not;</li>
+		<li>Static locals: if <code>strtok</code> doesn't disturb you, then I guess this won't make much sense :-)</li>
+	</ul>
+	</p>
+	<h3>Documents</h3>
+	<p>On this page are links towards PDF documents collectively describing what compiler writers need to know to implement Gamma. Keep in mind that they were written on extremely short notice, and thus gaps, repetitions and even contradictions may be present.<br />
+	<table>
+		<tr><th>Subject</th><th>Description</th><th>Last change</th></tr>
+		<tr>
+			<td><!--<a href="./gamma-spec/Language.pdf">-->Language<!--</a>--></td><td>Describes the core language.</td><td>Alpha release</td>
+		</tr>
+		<tr>
+			<td><!--<a href="./gamma-spec/Declarations.pdf">-->Declarations<!--</a>--></td><td>Describes the equivalent of the standard library in other languages.</td><td>Alpha release</td>
+		</tr>
+		<tr>
+			<td><!--<a href="./gamma-spec/Implementation.pdf">-->Implementation<!--</a>--></td><td>Explains several design decisions and offers ideas for solving several implementation problems.</td><td>Alpha release</td>
+		</tr>
+	</table>
+	</p>
+</body>
+</html>
