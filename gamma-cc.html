@@ -31,8 +31,6 @@
 			<pre>tg < src.gs > src.gsi</pre></li>
 			<li>Translate a header unit while preserving comments:
 			<pre>tg --comments < hdr.gh > hdr.ghi</pre></li>
-			<li>Translate a source unit, preferentially inlining calls to the function <code>max :: nmax(nmax,nmax)</code>:
-			<pre>tg --inline='max :: nmax(nmax,nmax)' < math.gs > math.gsi</pre></li>
 		</ul>
 		</li>
 		<li><code>lg</code>: <ul>
@@ -42,6 +40,8 @@
 			<pre>lg d mylib mylib.gsi /usr/lib/blas.ghi blas.gsi</pre></li>
 			<li>Link source translations into an archive (static library):
 			<pre>lg s myar foo.gsi bar.ghi bar.gsi baz.ghi baz.gsi</pre></li>
+			<li>Link source translations into an archive (static library), preferentially inlining calls to the function <code>max :: nmax(nmax,nmax)</code>:
+			<pre>lg s myar --inline='max :: nmax(nmax,nmax)' foo.gsi bar.ghi bar.gsi baz.ghi baz.gsi</pre></li>
 		</ul>
 		</li>
 	</ul>
