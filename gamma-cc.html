@@ -12,16 +12,16 @@
 		<h1 id="title">Gamma Bootstrap Toolchain</h1>
 	</div>
 	<h2>The very beginning</h2>
-	<p>Just like C, Gamma is designed to permit implementations with a good balance between speed and performance. Though this is (should be) detailed in the implementation document, it nevertheless deserves being repeated here:
+	<p>Just like C, Gamma is designed to permit functional implementations with relatively good performance. Though this is (should be) detailed in the implementation document, it nevertheless deserves being repeated here:
 	<ul>
-		<li>Simpler syntax: the grammar was deliberately chosen to avoid the problematic patterns that require the lexer hack in C;</li>
-		<li>Minimal runtime support: apart from true array support and nested subprograms, Gamma does not stray far from C in principle;</li>
-		<li>Simple standard library: apart from unicode support and a different organization, Gamma only includes, in the words of Bjarne Stroustroup, &quot;that which every implementer must support so that every programmer can rely on it&quot;;</li>
+		<li>Simpler syntax: the grammar and syntax were deliberately chosen to avoid the problematic patterns that require the lexer hack in C;</li>
+		<li>Minimal runtime support: apart from true array support and nested subprograms, Gamma does not stray far from C in this principle;</li>
+		<li>Simple standard library: apart from unicode support and a different organization, Gamma follows the words of Bjarne Stroustroup, &quot;that which every implementer must support so that every programmer can rely on it&quot;;</li>
 		<li>Cleaned up linkage: unlike the C family, Gamma uses a linkage procedure designed deliberately with interprocedural optimization in mind.</li>
 	</ul>
 	This culminates in two main programs for this bootstrap toolchain, which may also serve as a reference toolchain:
 	<ul>
-		<li><code>tg</code>, which works as a filter and translates a source or header unit to an intermediate format; and</li>
+		<li><code>tg</code>, which works as a filter and translates a source or header unit to an intermediate format, only performing syntactic checks; and</li>
 		<li><code>lg</code>, which works like an archiver and either links a bunch of intermediate files into an executable unit (program or library), or edits the unit in question (e.g. by adding or removing a symbol).</li>
 	</ul>
 	Example usages:
@@ -31,6 +31,8 @@
 			<pre>tg < src.gs > src.gsi</pre></li>
 			<li>Translate a header unit while preserving comments:
 			<pre>tg --comments < hdr.gh > hdr.ghi</pre></li>
+			<li>Translate a source unit, preferentially inlining calls to the function <code>max :: nmax(nmax,nmax)</code>:
+			<pre>tg --inline='max :: nmax(nmax,nmax)' < math.gs > math.gsi</pre></li>
 		</ul>
 		</li>
 		<li><code>lg</code>: <ul>
