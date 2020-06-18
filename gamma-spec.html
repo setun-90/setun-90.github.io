@@ -29,6 +29,7 @@
 	the points that I took the liberty of modifying were:
 	<ul>
 		<li>Type system: the basic types were rationalized and made consistent (e.g. <code>n1</code>,<code>n2</code>,<code>n4</code>,<code>n8</code> and so on for unsigned types, and <code>d1</code>,<code>d2</code>,<code>d4</code> and so on for floating-point types, where the number refers to the size of the type - this allows still supporting non-standard arches and byte sizes with considerably less byzantine type names);</li>
+		<li>Integer promotions: an unsigned integer, if promoted, will be promoted to signed integer type of greater size, in all circumstances;</li>
 		<li>Operator precedence: the bitwise operators are finally put in their proper precedence, ending the <code>(a & b) == c</code> infelicity;</li>
 		<li>Syntax: operators are spelt differently, notably casting and pointer dereference, to eliminate the need for the lexer hack, and initializations employ type inference (with casts available in case one needs a short rather than a byte);</li>
 		<li>Scoping: datums are defined at subprogram scope by default, like Python, though block scope is still available by labelling statements. This is for initializing locals in conditionals, because datums may not be uninitialized (see below);</li>
@@ -37,8 +38,10 @@
 	and the points that I took the liberty of eliminating were:
 	<ul>
 		<li>File inclusion: this is made redundant with the linkage process described, and is also explained in the implementation notes;</li>
+		<li>Integer conversions: a signed integer will <em>never</em> be converted <em>implicitly</em> to an unsigned integer type, period;</li>
+		<li>Arithmetic conversions: arithmetic operations should be interpreted as operating in infinite precision, regardless of the size of the operands, so the operands don't need to be of the same type as in C;</li>
 		<li>Uninitialized variables: a variable should be written to before any read, so it makes no sense for the language to allow otherwise;</li>
-		<li>Implicit conversions: in fact, some (like pointer conversions) are absolutely forbidden, since differing alignments in the source and target types will often result in undefined behavior. For reinterpreting bytes (e.g. the equivalent of <code>*((float *)&i)</code>), use unions - in fact, pointer conversions like that <em>are</em> undefined behavior in C, but union reinterpretations are not;</li>
+		<li>Other implicit conversions: in fact, some (like pointer conversions) are absolutely forbidden, since differing alignments in the source and target types will often result in undefined behavior. For reinterpreting bytes (e.g. the equivalent of <code>*((float *)&i)</code>), use unions - in fact, pointer conversions like that <em>are</em> undefined behavior in C, but union reinterpretations are not;</li>
 		<li>Static locals: if <code>strtok</code> doesn't disturb you, then I guess this won't make much sense :-)</li>
 	</ul>
 	</p>
