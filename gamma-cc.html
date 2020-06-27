@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Gamma Bootstrap Toolchain</title>
+	<title>Gamma Reference Toolchain</title>
 	<meta charset="utf-8" />
 	<link rel="icon" href="/logo-fill.svg" />
 	<link rel="stylesheet" href="/global.css" />
@@ -9,39 +9,39 @@
 <body>
 	<div id="banner">
 		<img id="logo" src="/logo-fill.svg" />
-		<h1 id="title">Gamma Bootstrap Toolchain</h1>
+		<h1 id="title">Gamma Reference Toolchain</h1>
 	</div>
 	<h2>The very beginning</h2>
 	<p>Just like C, Gamma is designed to permit functional implementations with relatively good performance. Though this is (should be) detailed in the implementation document, it nevertheless deserves being repeated here:
 	<ul>
 		<li>Simpler syntax: the grammar and syntax were deliberately chosen to avoid the problematic patterns that require the lexer hack in C;</li>
 		<li>Minimal runtime support: apart from true array support and nested subprograms, Gamma does not stray far from C in this principle;</li>
-		<li>Simple standard library: apart from unicode support and a different organization, Gamma follows the words of Bjarne Stroustroup, &quot;that which every implementer must support so that every programmer can rely on it&quot;;</li>
+		<li>Simple standard library: apart from unicode support and a different organization, Gamma follows the words of Bjarne Stroustroup, providing &quot;that which every implementer must support so that every programmer can rely on it&quot;;</li>
 		<li>Cleaned up linkage: unlike the C family, Gamma uses a linkage procedure designed deliberately with interprocedural optimization in mind.</li>
 	</ul>
-	This culminates in two main programs for this bootstrap toolchain, which may also serve as a reference toolchain:
+	This culminates in two main programs for this reference toolchain:
 	<ul>
-		<li><code>tg</code>, which works as a filter and translates a source or header unit to an intermediate format, only performing syntactic checks; and</li>
+		<li><code>tg</code>, which works as a filter and translates a source or header unit to an intermediate format, only performing syntactic and type checks; and</li>
 		<li><code>lg</code>, which works like an archiver and either links a bunch of intermediate files into an executable unit (program or library), or edits the unit in question (e.g. by adding or removing a symbol).</li>
 	</ul>
 	Example usages:
 	<ul>
 		<li><code>tg</code>: <ul>
-			<li>Translate a source unit normally:
-			<pre>tg < src.gs > src.gsi</pre></li>
 			<li>Translate a header unit while preserving comments:
-			<pre>tg --comments < hdr.gh > hdr.ghi</pre></li>
+			<pre>tg h --comments < hdr.gh > hdr.t</pre></li>
+			<li>Translate a source unit, using declarations in math/blas.t:
+			<pre>tg s math/blas < src.gs > src.p</pre></li>
 		</ul>
 		</li>
 		<li><code>lg</code>: <ul>
 			<li>Transform the source translation for a Hello World unit into an executable:
-			<pre>lg x hello hello.gsi</pre></li>
+			<pre>lg x hello hello.p</pre></li>
 			<li>Link a source translation with a hypothetical BLAS implementation in Gamma into a shared library:
-			<pre>lg d mylib mylib.gsi /usr/lib/blas.ghi blas.gsi</pre></li>
+			<pre>lg d mylib mylib.p -l/usr/lib/libblas.so</pre></li>
 			<li>Link source translations into an archive (static library):
-			<pre>lg s myar foo.gsi bar.ghi bar.gsi baz.ghi baz.gsi</pre></li>
+			<pre>lg s myar foo.p bar.p baz.p</pre></li>
 			<li>Link source translations into an archive (static library), preferentially inlining calls to the function <code>max :: nmax(nmax,nmax)</code>:
-			<pre>lg s myar --inline='max :: nmax(nmax,nmax)' foo.gsi bar.ghi bar.gsi baz.ghi baz.gsi</pre></li>
+			<pre>lg s myar --inline='max :: nmax(nmax,nmax)' foo.p bar.p baz.p</pre></li>
 		</ul>
 		</li>
 	</ul>
