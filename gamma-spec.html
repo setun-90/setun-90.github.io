@@ -11,7 +11,7 @@
 		<img id="logo" src="/logo-fill.svg" />
 		<h1 id="title">Gamma Language Specification</h1>
 	</div>
-	<h2>C with fewer bad decisions</h2>
+	<h2>The Scala of C</h2>
 	<h3>Background</h3>
 	<p>Even though I came up with the language as described in these documents only in November of 2019, the concepts in this language had been rolling around in my mind for the past year or so.</p>
 	<p>The reason why I decided to create a replacement specifically for C, as opposed to some extension or clean-up, is because in my opinion, C occupies a niche that is unavoidable. C combines low-level manipulation of memory with low runtime footprint and yet has features which make it possible and, with discipline, not all too impractical to develop decent applications. The only problem is that it comes with design decisions which do not stem from any requirements of those applications, yet make it more dangerous than is truly necessary. For example, the bitwise operator precedence was chosen for backwards compatibility with B, and the null-terminated byte arrays came from <em>personal</em> experience of Dennis Ritchie and Ken Thompson. Why others accepted adopting this language without insisting on adding some array support escapes me, especially given <a href="https://en.wikipedia.org/wiki/Dope_vector">dope vectors</a> have existed for quite some time. Then again, one would be surprised at the short-sightedness of the IT industry at times. (Or aggravated. Or not surprised at all. I can't tell for you.)</p>
