@@ -20,13 +20,13 @@
 		<li>Type system: except for a few modifications, arrays, pointers and function pointers have practically exact equivalents in Gamma, and constancy works in the same way;</li>
 		<li>Statements: except for minor aesthetic differences, most C statements have direct equivalents;</li>
 	</ul>
-	while the points that I took the liberty of extending were:
+	while the points which I took the liberty of extending were:
 	<ul>
 		<li>Type system: function (but not operator) overloading is supported, and a result qualifier was added which makes reading from the datum forbidden. This would have use in, say, routines cooperating in cryptographic applications, where the code must not be able to read confidential output;</li>
 		<li>Nested subprograms: a subprogram (function or procedure) can be nested, and obeys the same rules as other local datums (including not returning its address, since it would be tantamount to returning the address of a local - which, newsflash, is undefined behavior in C);</li>
 		<li>Array values: array parameters and arguments in subprogram calls now conserve their length (i.e. <code>#arr</code> actually returns the length of the array), obviating the need for things like <code>strlen</code>;</li>
 	</ul>
-	the points that I took the liberty of modifying were:
+	the points which I took the liberty of modifying were:
 	<ul>
 		<li>Type system: the basic types were rationalized and made consistent (e.g. <code>n1</code>,<code>n2</code>,<code>n4</code>,<code>n8</code> and so on for unsigned types, and <code>d1</code>,<code>d2</code>,<code>d4</code> and so on for floating-point types, where the number refers to the size of the type - this allows still supporting non-standard arches and byte sizes with considerably less byzantine type names);</li>
 		<li>Integer promotions: an unsigned integer, if promoted, will be promoted to signed integer type of greater size, in all circumstances;</li>
@@ -35,7 +35,7 @@
 		<li>Scoping: datums are defined at subprogram scope by default, like Python, though block scope is still available by labelling statements. This is for initializing locals in conditionals, because datums may not be uninitialized (see below);</li>
 		<li>Behavior: some forms of undefined behavior are eliminated, while others are introduced, for reasons which will be explained.</li>
 	</ul>
-	and the points that I took the liberty of eliminating were:
+	and the points which I took the liberty of eliminating were:
 	<ul>
 		<li>File inclusion: this is made redundant with the linkage process described, and is also explained in the implementation notes;</li>
 		<li>Integer conversions: a signed integer will <em>never</em> be converted <em>implicitly</em> to an unsigned integer type, period;</li>
