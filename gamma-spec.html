@@ -38,6 +38,7 @@
 	and the points which I took the liberty of eliminating were:
 	<ul>
 		<li>File inclusion: this is made redundant with the linkage process described, and is also explained in the implementation notes;</li>
+		<li>Null pointers: again, unions will provide a solution that will be illustrated in some examples;</li>
 		<li>Integer conversions: a signed integer will <em>never</em> be converted <em>implicitly</em> to an unsigned integer type, period;</li>
 		<li>Arithmetic conversions: arithmetic operations should be interpreted as operating in infinite precision, regardless of the size of the operands, so the operands don't need to be of the same type as in C;</li>
 		<li>Uninitialized variables: a variable should be written to before any read, so it makes no sense for the language to allow otherwise;</li>
