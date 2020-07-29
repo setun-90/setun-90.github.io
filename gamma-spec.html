@@ -16,6 +16,7 @@
 	<p>Even though I came up with the language as described in these documents only in November of 2019, the concepts in this language had been rolling around in my mind for the past year or so.</p>
 	<p>The reason why I decided to work at C's level, instead of at a higher level or at the level of assembly, is because I feel that C occupies a niche that simply won't go away. The simple fact is that Linux is written in C; Windows is written in C at the core; Redox even <em>has</em> to offer a C standard library implementation; C++ still keeps backwards compatibility; Python, PHP, Java and other dynamic languages use implementations written in C; and even IoT is often done in C. The message is clear: C may not <em>behave</em> like a portable assembler, but it sure as hell is used like one.</p>
 	<p>The problem is, it has dangers which are not relevant to its applications. Operator precedence was chosen for backwards compatibility with B; null-terminated strings came from the <em>personal</em> experience of Dennis Ritchie and Ken Thompson; integer conversions and promotions only made sense back in the 80s; the increment and decrement operators only really promote unreadability while introducing moronic possbilities for undefined behavior; and the lexer hack doesn't make me think that the language is easy to parse. Then again, Putt's law is suggestive of who really put C in this niche in the first place. And of course, that is history - and we can only influence our future.</p>
+	<p>This idea may suggest something similar to Ada - and indeed, I will not deny I have taken a look at it. Also, while the specification here should be at least usable, it shouldn't be considered complete; I am not ruling out adding (or perhaps removing) features in the future, but I will not do so without taking a wide look at all of the prior art in the industry.</p>
 	<p>To put it briefly, the points I took (almost) wholesale from C were:
 	<ul>
 		<li>Type system: except for a few modifications, arrays, pointers and function pointers have practically exact equivalents in Gamma, and constancy works in the same way;</li>
@@ -33,7 +34,6 @@
 		<li>Integer promotions: an unsigned integer, if promoted, will be promoted to signed integer type of greater size, in all circumstances;</li>
 		<li>Operator precedence: the bitwise operators are finally put in their proper precedence, ending the <code>(a & b) == c</code> infelicity;</li>
 		<li>Syntax: operators are spelt differently, notably casting and pointer dereference, to eliminate the need for the lexer hack, and initializations employ type inference (with casts available in case one needs a short rather than a byte);</li>
-		<li>Scoping: datums are defined at subprogram scope by default, like Python, though block scope is still available by labelling statements. This is for initializing locals in conditionals, because datums may not be uninitialized (see below);</li>
 		<li>Behavior: some forms of undefined behavior are eliminated, while others are introduced, for reasons which will be explained.</li>
 	</ul>
 	and the points which I took the liberty of eliminating were:
@@ -42,7 +42,7 @@
 		<li>Null pointers: again, unions will provide a solution that will be illustrated in some examples;</li>
 		<li>Integer conversions: a signed integer will <em>never</em> be converted <em>implicitly</em> to an unsigned integer type, period;</li>
 		<li>Arithmetic conversions: arithmetic operations should be interpreted as operating in infinite precision, regardless of the size of the operands, so the operands don't need to be of the same type as in C;</li>
-		<li>Uninitialized variables: a variable should be written to before any read, so it makes no sense for the language to allow otherwise;</li>
+		<li>Uninitialized variable reads: a variable should be written to before any read, so it makes no sense for the language to allow otherwise;</li>
 		<li>Other conversions: in fact, some, like <code>*((float *)&i)</code>, are undefined behavior (due to differing alignments) even in C, and that pointer conversion is better handled by unions, so there's arguably no loss here;</li>
 		<li>Static locals: if <code>strtok</code> doesn't disturb you, then I guess this won't make much sense :-)</li>
 	</ul>
@@ -52,7 +52,7 @@
 	<table>
 		<tr><th>Subject</th><th>Description</th><th>Last change</th></tr>
 		<tr>
-			<td><a href="/gamma-spec/Language.pdf">Language</a></td><td>Describes the core language.</td><td>Corrected description of linkage and improved style.</td>
+			<td><a href="/gamma-spec/Language.pdf">Language</a></td><td>Describes the core language.</td><td>OVERHAUL: Declaration syntax and scoping.</td>
 		</tr>
 		<tr>
 			<td><!--<a href="/gamma-spec/Declarations.pdf">-->Declarations<!--</a>--></td><td>Describes the equivalent of the standard library in other languages.</td><td>Alpha release</td>
