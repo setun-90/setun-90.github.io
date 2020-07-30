@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Gamma Reference Toolchain</title>
+	<title>Gamma Reference Implementation</title>
 	<meta charset="utf-8" />
 	<link rel="icon" href="/logo-fill.svg" />
 	<link rel="stylesheet" href="/global.css" />
@@ -9,7 +9,7 @@
 <body>
 	<div id="banner">
 		<img id="logo" src="/logo-fill.svg" />
-		<h1 id="title">Gamma Reference Toolchain</h1>
+		<h1 id="title">Gamma Reference Implementation</h1>
 	</div>
 	<h2>The very beginning</h2>
 	<p>Just like C, Gamma is designed to permit functional implementations with relatively good performance. Though this is (should be) detailed in the implementation document, it nevertheless deserves being repeated here:
@@ -19,7 +19,7 @@
 		<li>Simple standard library: apart from unicode support and a different organization, Gamma follows the words of Bjarne Stroustroup, providing &quot;that which every implementer must support so that every programmer can rely on it&quot;;</li>
 		<li>Cleaned up linkage: unlike the C family, Gamma uses a linkage procedure designed deliberately with interprocedural optimization in mind.</li>
 	</ul>
-	This culminates in two main programs for this reference toolchain:
+	This culminates in two main programs for this reference implementation:
 	<ul>
 		<li><code>tg</code>, which works as a filter and translates a source or header unit to an intermediate format, only performing syntactic and type checks; and</li>
 		<li><code>lg</code>, which works like an archiver and either links a bunch of intermediate files into an executable unit (program or library), or edits the unit in question (e.g. by adding or removing a symbol).</li>
