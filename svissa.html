@@ -12,30 +12,41 @@
 		<h1 id="title">SViSSA</h1>
 	</div>
 	<h2>Your motherboard has too many chips in too many wrong places</h2>
+	<h3>Background</h3>
 	<p>This originally started out as a way to associate I/O commands with applications; what this ended up being was a long journey into computing history. Because of its length, I'll just present the design first and explain in the hopes of catching any questions.</p>
-	<h2>Design</h2>
-	<p>The SViSSA (Synchronizing Virtual Storage System Architecture) is a systematic approach to system architecture. In a normal computer, the system architecture puts the CPU and the RAM together, and any other devices attached to the system are either controlled by the CPU or perform DMA and interrupt it. Frequently the interrupt mechanism is limited to device-to-CPU communication, and it communicates nothing about the completed I/O operation's context. The SViSSA differs in two ways:
+	<p>In a normal computer, the system architecture puts the CPU and the RAM together, and any other devices attached to the system are either controlled by the CPU or perform DMA and interrupt it. Frequently the interrupt mechanism is limited to device-to-CPU communication, and it communicates nothing about the completed I/O operation's context.</p>
+	<h3>Design</h3>
+	<p>The SViSSA (Synchronizing Virtual Storage System Architecture) is a systematic approach to system architecture. The SViSSA is based on two principles:
 	<ol>
-		<li>all devices accessing RAM (CPUs or other) must work with virtual addresses</li>
-		<li>all interruptible devices have RAM addresses assigned to them and are interrupted by writing an interrupt entry to them. This interrupt entry typically consists of a process identifier or anything that distinguishes address spaces and a virtual address pointing to a data area that the interrupted device knows how to process.</li>
+		<li>all devices accessing RAM (CPUs or other) must work with virtual addresses;</li>
+		<li>all interrupts indicate in which context they must be processed.</li>
 	</ol>
-	Such an architecture has the following advantages:
+	To do this, the SViSSA defines the following notions:
+	<ol>
+		<li><em>main memory</em>, basically the standard array of bytes which everyone knows.</li>
+		<li><em>processing units</em>, or devices which follow an <em>instruction cycle</em> and are thus <em>programmable</em>. Examples are obviously CPUs, but also GPUs, IBM mainframe channels, SCSI controllers, and so forth.</li>
+		<li><em>attached units</em>, or units which simply transfer data to and from main memory and aren't programmable. Examples are PS/2 devices, sensors and so forth.</li>
+		<li><em>virtual memory</em>, which includes the virtual address formats, structures (e.g. paging vs. segmentation, tables and directories, entry formats, etc.), and basic procedures (page/segment table walks, context switching, etc.).</li>
+		<li><em>interrupt entries</em>, which may vary, but often will be just a value identifying an address space concatenated with an address to resolve in that address space.</li>
+	</ol>
+	Such an architecture allows the following:
 	<ol>
 		<li>drivers need never go into kernel mode to interact with devices;</li>
-		<li>zero-copy I/O works even with virtual memory; and</li>
-		<li>interrupts can be handled directly by applications.</li>
+		<li>zero-copy I/O works even with virtual memory;</li>
+		<li>interrupts can be handled directly by applications;</li>
+		<li>a processing unit could theoretically change architecture on every interrupt.</li>
 	</ol></p>
-	<h2>Explanations</h2>
-	<h3>Why this?</h3>
-	<p>Because I was struggling to understand how real-world computers did it. I knew that interrupts only signaled that a device had completed an I/O operation, but I simply did not grasp how the I/O operation was linked to the application that had issued it. I then turned to the related problem of transmitting virtual addresses to devices, and then eventually hit on the idea of sending back the application's context as part of the interrupt. I eventually grasped how it's done, but I felt that this had to be shared, especially since there doesn't seem to be mention of this anywhere. Even IBM mainframes don't do this AFAIK.</p>
-	<h3>Who cares?</h3>
+	<h3>Explanations</h3>
+	<h4>Why this?</h4>
+	<p>Because I was struggling to understand how real-world computers did it. I knew that interrupts only signaled that a device had completed an I/O operation, but I simply did not grasp how the I/O operation was linked to the application that had issued it. I then turned to the related problem of transmitting virtual addresses to devices, and then eventually hit on the idea of sending back the application's context as part of the interrupt. I eventually grasped how it is done, but I felt that this had to be shared, especially since there doesn't seem to be mention of this anywhere. Even IBM mainframes don't do this AFAIK.</p>
+	<h4>Who cares?</h4>
 	<p>At least I do. I am perhaps one of the few who care about simplicity and elegance, and this seemed simple and elegant to me. If you don't, then maybe you should be doing something more important than reading this :-)</p>
-	<h3>Why don't we do this already?</h3>
+	<h4>Why don't we do this already?</h4>
 	<p>Short explanation: PC compatibility. Yes, the 1980s, Compaq-BIOS-era compatibility. Once again, backwards compatibility is why we can't have nice things.</p>
 	<p>Okay, perhaps I lie: Micro Channel Architecture (on the PS/2) specified a way for interrupts to be intercepted by any device on the bus, allowing something similar to assigning interrupt ports to any device in the SViSSA. There is still no information associated with interrupts in MCA, however.</p>
-	<h3>Isn't this AMD's Heterogenous System Architecture?</h3>
+	<h4>Isn't this AMD's Heterogenous System Architecture?</h4>
 	<p>Partly; HSA has unified virtual memory for the CPU and GPU, but the interrupt mechanism doesn't use the virtual memory system. So applications can pass virtual addresses to devices, but interrupts aren't passed straight to applications.</p>
-	<h3>Where can/will this go?</h3>
+	<h4>Where can/will this go?</h4>
 	<p>This is partly why this is here in the 'On the drawing board' section; even though the idea itself is done, there is little that I can do for now. That said, one possibility is to create an emulator for testing purposes. QEMU would be interesting, but I still haven't managed to understand its architecture enough to add other systems.</p>
 </body>
 </html>
