@@ -12,17 +12,17 @@
 		<h1 id="title">Gamma Reference Implementation</h1>
 	</div>
 	<h2>The very beginning</h2>
-	<p>Just like C, Gamma is designed to permit functional implementations with relatively good performance. Though this is (should be) detailed in the implementation document, it nevertheless deserves being repeated here:
+	<p>Just like C, Gamma is designed to permit functional implementations with relatively good performance. The following is presented on the specification page, but I'll summarize it here:
 	<ul>
 		<li>Simpler syntax: the grammar and syntax were deliberately chosen to avoid the problematic patterns that require the lexer hack in C;</li>
 		<li>Minimal runtime support: apart from true array support and nested subprograms, Gamma does not stray far from C in this principle;</li>
-		<li>Simple standard library: apart from unicode support and a different organization, Gamma follows the words of Bjarne Stroustroup, providing &quot;that which every implementer must support so that every programmer can rely on it&quot;;</li>
+		<li>Simple standard library: apart from unicode support, abstract data types and a different organization, Gamma follows the words of Bjarne Stroustroup, providing &quot;that which every implementer must support so that every programmer can rely on it&quot;;</li>
 		<li>Cleaned up linkage: unlike the C family, Gamma uses a linkage procedure designed deliberately with interprocedural optimization in mind.</li>
 	</ul>
 	This culminates in two main programs for this reference implementation:
 	<ul>
 		<li><code>tg</code>, which works as a filter and translates a source or header unit to an intermediate format, only performing syntactic and type checks; and</li>
-		<li><code>lg</code>, which works like an archiver and either links a bunch of intermediate files into an executable unit (program or library), or edits the unit in question (e.g. by adding or removing a symbol).</li>
+		<li><code>lg</code>, which works as an archiver and either links a bunch of intermediate files into an executable unit (program or library), or edits the unit in question (e.g. by adding or removing a symbol).</li>
 	</ul>
 	Example usages:
 	<ul>
@@ -30,7 +30,7 @@
 			<li>Translate a header unit while preserving comments:
 			<pre>tg h --comments < hdr.gh > hdr.t</pre></li>
 			<li>Translate a source unit, using declarations in math/blas.t:
-			<pre>tg s math/blas < src.gs > src.p</pre></li>
+			<pre>tg s math/blas.t < src.gs > src.p</pre></li>
 		</ul>
 		</li>
 		<li><code>lg</code>: <ul>
@@ -40,8 +40,8 @@
 			<pre>lg d mylib mylib.p -l/usr/lib/libblas.so</pre></li>
 			<li>Link source translations into an archive (static library):
 			<pre>lg s myar foo.p bar.p baz.p</pre></li>
-			<li>Link source translations into an archive (static library), preferentially inlining calls to the function <code>max :: nmax(nmax,nmax)</code>:
-			<pre>lg s myar --inline='max :: nmax(nmax,nmax)' foo.p bar.p baz.p</pre></li>
+			<li>Link source translations into an archive (static library), preferentially inlining calls to the function <code>max: nmax(a: nmax, b: nmax)</code>:
+			<pre>lg s myar --inline='max: nmax(a: nmax, b: nmax)' foo.p bar.p baz.p</pre></li>
 		</ul>
 		</li>
 	</ul>
