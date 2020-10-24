@@ -28,6 +28,7 @@
 		<li>Type system: function (but not operator) overloading is supported, and a result qualifier was added which makes reading from the datum forbidden. This would have use in, say, routines cooperating in cryptographic applications, where the code must not be able to read confidential output;</li>
 		<li>Nested subprograms: a subprogram (function or procedure) can be nested, and obeys the same rules as other local datums (including not returning its address, since it would be tantamount to returning the address of a local - which, newsflash, is undefined behavior in C);</li>
 		<li>Array values: array parameters and arguments in subprogram calls now conserve their length (i.e. <code>#arr</code> actually returns the length of the array), obviating the need for things like <code>strlen</code>;</li>
+		<li>Namespaces: this is not just out of a matter of convenience, but also required by the standard library, which would otherwise be much more difficult to structure and implement;</li>
 	</ul>
 	the points which I took the liberty of modifying were:
 	<ul>
@@ -35,7 +36,7 @@
 		<li>Integer promotions: an unsigned integer, if promoted, will be promoted to signed integer type of greater size, in all circumstances;</li>
 		<li>Operator precedence: the bitwise operators are finally put in their proper precedence, ending the <code>(a & b) == c</code> infelicity;</li>
 		<li>Syntax: operators are spelt differently, notably casting and pointer dereference, to eliminate the need for the lexer hack, and initializations employ type inference (with casts available in case one needs a short rather than a byte);</li>
-		<li>Behavior: some forms of undefined behavior are eliminated, while others are introduced, for reasons which will be explained.</li>
+		<li>Behavior: some forms of undefined behavior are eliminated, while others are introduced, for reasons which will be explained;</li>
 	</ul>
 	and the points which I took the liberty of eliminating were:
 	<ul>
@@ -54,7 +55,7 @@
 	<table>
 		<tr><th>Subject</th><th>Description</th><th>Last change</th></tr>
 		<tr>
-			<td><a href="/gamma-spec/Language.pdf">Language</a></td><td>Describes the core language.</td><td>Corrected description of syntax for . and @ operators.</td>
+			<td><a href="/gamma-spec/Language.pdf">Language</a></td><td>Describes the core language.</td><td>Added namespaces.</td>
 		</tr>
 		<tr>
 			<td><!--<a href="/gamma-spec/Declarations.pdf">-->Declarations<!--</a>--></td><td>Describes the equivalent of the standard library in other languages.</td><td>Alpha release.</td>
