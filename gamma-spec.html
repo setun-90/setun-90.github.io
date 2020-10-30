@@ -12,6 +12,22 @@
 		<h1 id="title">Gamma Language Specification</h1>
 	</div>
 	<h2>The Scala of C</h2>
+	<h3>Documents</h3>
+	<p>These PDF documents collectively form the specification of Gamma, detailing what must be made available to programmers. Keep in mind that they were written on extremely short notice, and thus gaps, repetitions and even contradictions may be present.<br />
+	<table>
+		<tr><th>Subject</th><th>Description</th><th>Last change</th></tr>
+		<tr>
+			<td><a href="/gamma-spec/Language.pdf">Language</a></td><td>Describes the core language.</td><td>Added namespaces.</td>
+		</tr>
+		<tr>
+			<td><a href="/gamma-spec/Declarations.pdf">Declarations</a></td><td>Describes the equivalent of the standard library in other languages.</td><td>Alpha release.</td>
+		</tr>
+		<tr>
+			<td><a href="/gamma-spec/Benchmarks.pdf">Benchmarks</a></td><td>Prescribes how to assess performance of Gamma code.</td><td>Alpha release.</td>
+		</tr>
+	</table>
+	</p>
+
 	<h3>Background</h3>
 	<p>Even though I came up with the language as described in these documents only in November of 2019, the concepts in this language had been rolling around in my mind for the past year or so.</p>
 	<p>The reason why I decided to work at C's level, instead of at a higher level or at the level of assembly, is because I feel that C occupies a niche that simply won't go away. The simple fact is that Linux is written in C; Windows is written in C at the core; Redox even <em>has</em> to offer a C standard library implementation; C++ still keeps backwards compatibility; Python, PHP, Java and other dynamic languages use implementations written in C; and even IoT is often done in C. The message is clear: C may not <em>behave</em> like a portable assembler, but it sure as hell is used like one.</p>
@@ -49,21 +65,7 @@
 		<li>Static locals: if <code>strtok</code> doesn't disturb you, then I guess this won't make much sense :-)</li>
 	</ul>
 	</p>
-
-	<h3>Documents</h3>
-	<p>On this page are links towards PDF documents collectively describing what must be known to implement and use Gamma. Keep in mind that they were written on extremely short notice, and thus gaps, repetitions and even contradictions may be present.<br />
-	<table>
-		<tr><th>Subject</th><th>Description</th><th>Last change</th></tr>
-		<tr>
-			<td><a href="/gamma-spec/Language.pdf">Language</a></td><td>Describes the core language.</td><td>Added namespaces.</td>
-		</tr>
-		<tr>
-			<td><a href="/gamma-spec/Declarations.pdf">Declarations</a></td><td>Describes the equivalent of the standard library in other languages.</td><td>Alpha release.</td>
-		</tr>
-		<tr>
-			<td><a href="/gamma-spec/Benchmarks.pdf">Benchmarks</a></td><td>Prescribes how to assess performance of Gamma code.</td><td>Alpha release.</td>
-		</tr>
-	</table>
-	</p>
+	<h3>Discussion</h3>
+	Coming soon!
 </body>
 </html>
