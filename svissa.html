@@ -25,9 +25,9 @@
 	<ol>
 		<li><em>main memory</em>, basically the standard array of bytes which everyone knows.</li>
 		<li><em>processing units</em>, or devices which follow an <em>instruction cycle</em> and are thus <em>programmable</em>. Examples are obviously CPUs, but also GPUs, IBM mainframe channels, SCSI controllers, and so forth.</li>
-		<li><em>attached units</em>, or units which simply transfer data to and from main memory and aren't programmable. Examples are PS/2 devices, sensors and so forth.</li>
+		<li><em>attached units</em>, or units which simply transfer data to and from main memory and aren't programmable. Examples are keyboard controllers, sensors and so forth.</li>
 		<li><em>virtual memory</em>, which includes the virtual address formats, structures (e.g. paging vs. segmentation, tables and directories, entry formats, etc.), and basic procedures (page/segment table walks, context switching, etc.).</li>
-		<li><em>interrupt entries</em>, which may vary, but often will be just a value identifying an address space concatenated with an address to resolve in that address space.</li>
+		<li><em>interrupt entries</em>, which may vary, but often will be just a value identifying an address space concatenated with an address to resolve in that address space, which effectively requires something like PCI/PCIe's MSI/MSI-X.</li>
 	</ol>
 	Such an architecture allows the following:
 	<ol>
@@ -36,6 +36,14 @@
 		<li>interrupts can be handled directly by applications;</li>
 		<li>a processing unit could theoretically change architecture on every interrupt.</li>
 	</ol></p>
+	<h3>Example: a PC</h3>
+	<p>A PC developed with SViSSA could be organized into two main parts: the CPU and the IO unit. Each part has its own MMU, but the MMUs, per SViSSA, have compatible address formats, so addresses can be passed from one to the other. The IO unit would contain the various controllers, including mouse, keyboard, permanent storage and NIC, as well as heavier peripherals such as the graphics card and others.</p>
+	<h4>Interaction example: command-line </h4>
+	<p>Let us assume a command-line shell running atop a TTY on this computer. The TTY controls input and output ring buffers in memory, and the shell accesses them via shared memory. We do not need to assume that the shell is a process, or that the TTY is in kernel mode; this are related to the software interfaces, which are not the subject here.</p>
+	<p>When the user hits a key for a printing character, the keyboard controller (on the mainboard) sends the resulting character code to the terminal emulator's buffer via DMA, and also interrupts the GPU by passing it the address of the ring buffer, so that it may render the character. When the user hits Enter, the keyboard controller would then interrupt the CPU; what the interrupt entry points to can vary, but one entirely valid possibility in this scenario is that the interrupt entry points to the address of an event handler for the shell to handle the buffer input, in the shell's address space. In this case, the CPU can either jump directly into that shell event handler and start processing the data immediately, or jump into an intermediate handler to schedule execution of the shell's handler for later (effectively becoming an IO thread).</p>
+	<p>The advantage of this is that many layers of device handling code can be bypassed. Indeed, in such a PC, the kernel would be limited to merely configuring the controller's interrupt port, and the TTY would have the actual responsibility of &quot;hooking up&quot; the keyboard controller to the GPU and the applications requesting its input.</p>
+	<h4>
+	</p>
 	<h3>Explanations</h3>
 	<h4>Why this?</h4>
 	<p>Because I was struggling to understand how real-world computers did it. I knew that interrupts only signaled that a device had completed an I/O operation, but I simply did not grasp how the I/O operation was linked to the application that had issued it. I then turned to the related problem of transmitting virtual addresses to devices, and then eventually hit on the idea of sending back the application's context as part of the interrupt. I eventually grasped how it is done, but I felt that this had to be shared, especially since there doesn't seem to be mention of this anywhere. Even IBM mainframes don't do this AFAIK.</p>
@@ -43,7 +51,7 @@
 	<p>At least I do. I am perhaps one of the few who care about simplicity and elegance, and this seemed simple and elegant to me. If you don't, then maybe you should be doing something more important than reading this :-)</p>
 	<h4>Why don't we do this already?</h4>
 	<p>Short explanation: PC compatibility. Yes, the 1980s, Compaq-BIOS-era compatibility. Once again, backwards compatibility is why we can't have nice things.</p>
-	<p>Okay, perhaps I lie: Micro Channel Architecture (on the PS/2) specified a way for interrupts to be intercepted by any device on the bus, allowing something similar to assigning interrupt ports to any device in the SViSSA. There is still no information associated with interrupts in MCA, however.</p>
+	<p>Okay, perhaps I lie: Micro Channel Architecture (on the PS/2) specified a way for interrupts to be intercepted by any device on the bus, allowing something similar to assigning interrupt ports to any device in the SViSSA. Interrupts still don't carry information in MCA, however.</p>
 	<h4>Isn't this AMD's Heterogenous System Architecture?</h4>
 	<p>Partly; HSA has unified virtual memory for the CPU and GPU, but the interrupt mechanism doesn't use the virtual memory system. So applications can pass virtual addresses to devices, but interrupts aren't passed straight to applications.</p>
 	<h4>Where can/will this go?</h4>
