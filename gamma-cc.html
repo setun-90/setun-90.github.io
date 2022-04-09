@@ -19,31 +19,46 @@
 		<li>Simple standard library: apart from unicode support, abstract data types and a different organization, Gamma follows the words of Bjarne Stroustroup, providing &quot;that which every implementer must support so that every programmer can rely on it&quot;;</li>
 		<li>Cleaned up linkage: unlike the C family, Gamma uses a linkage procedure designed deliberately with interprocedural optimization in mind.</li>
 	</ul>
-	This culminates in two main programs for this reference implementation:
+	This results in three main programs for this reference implementation:
 	<ul>
-		<li><code>tg</code>, which works as a filter and translates a source or header unit to an intermediate format, only performing syntactic and type checks; and</li>
-		<li><code>lg</code>, which works as an archiver and either links a bunch of intermediate files into an executable unit (program or library), or edits the unit in question (e.g. by adding or removing a symbol).</li>
+		<li><code>g2i</code>, which works as a function and translates a source or header unit to an intermediate format, only performing syntactic and semantic checks;</li>
+		<li><code>lg</code>, which works as an archiver and edits intermediate files by adding, replacing or removing functions, and on some platforms linking those files to shared libraries; and</li>
+		<li><code>i2m</code>, which works like <code>g2i</code> and transforms an intermediate format file into a binary.</li>
 	</ul>
 	Example usages:
 	<ul>
-		<li><code>tg</code>: <ul>
+		<li><code>g2i</code>: <ul>
 			<li>Translate a header unit while preserving comments:
-			<pre>tg h --comments < hdr.gh > hdr.t</pre></li>
+			<pre>g2i h --comments < hdr.gh > hdr.t</pre></li>
 			<li>Translate a source unit, using declarations in math/blas.t:
-			<pre>tg s math/blas.t < src.gs > src.p</pre></li>
-		</ul>
-		</li>
+			<pre>g2i s math/blas.t < src.gs > src.p</pre></li>
+		</ul></li>
 		<li><code>lg</code>: <ul>
-			<li>Transform the source translation for a Hello World unit into an executable:
-			<pre>lg x hello hello.p</pre></li>
-			<li>Link a source translation with a hypothetical BLAS implementation in Gamma into a shared library:
-			<pre>lg d mylib mylib.p -l/usr/lib/libblas.so</pre></li>
-			<li>Link source translations into an archive (static library):
-			<pre>lg s myar foo.p bar.p baz.p</pre></li>
-			<li>Link source translations into an archive (static library), preferentially inlining calls to the function <code>max: nmax(a: nmax, b: nmax)</code>:
-			<pre>lg s myar --inline='max: nmax(a: nmax, b: nmax)' foo.p bar.p baz.p</pre></li>
-		</ul>
-		</li>
+			<li>Link all symbols in the intermediate file <code>mylib</code> with a BLAS implementation:
+			<pre>lg l mylib.p /usr/lib/libblas.so</pre></li>
+			<li>Unlink all symbols in the intermediate file <code>mylib</code> from a BLAS implementation:
+			<pre>lg u mylib.p /usr/lib/libblas.so</pre></li>
+			<li>Combine symbols from intermediate files <code>foo</code>, <code>bar</code> and <code>baz</code> into qux:
+			<pre>lg a qux.p -f foo.p -f bar.p -f baz.p</pre></li>
+			<li>Rename a symbol <code>max: nmax(a: nmax, b: nmax)</code> to <code>_max: nmax(a: nmax, b: nmax)</code>:
+			<pre>lg e qux.p -s 'max: nmax(a: nmax, b: nmax)=_max: nmax(a: nmax, b: nmax)' </pre></li>
+			<li>Replace the definition of symbol <code>max: nmax(a: nmax, b: nmax)</code> with the definition in foo:
+			<pre>lg e qux.p -d 'max: nmax(a: nmax, b: nmax)' -f foo.p </pre></li>
+			<li>Remove a symbol <code>max: nmax(a: nmax, b: nmax)</code>:
+			<pre>lg d qux.p 'max: nmax(a: nmax, b: nmax)'</pre></li>
+		</ul></li>
+		<li><code>i2m</code>: <ul>
+			<li>Translate an intermediate unit into an ELF executable (with a Linux-compatible entry point, e.g. <code>_start: n4()</code>):
+			<pre>i2m ELF:x < prog.p > prog</pre></li>
+			<li>Translate an intermediate file into an ELF shared library:
+			<pre>i2m ELF:s < foo.p > libfoo.so </pre></li>
+			<li>Translate an intermediate file into an ELF shared library, preferentially inlining calls to the function <code>max: nmax(a: nmax, b: nmax)</code>:
+			<pre>i2m ELF:s --inline='max: nmax(a: nmax, b: nmax)' < foo.p > libfoo.so </pre></li>
+			<li>Translate an intermediate file into a Windows executable with entry point <code>qux: n4()</code>:
+			<pre>i2m PE:exe -e 'qux: n4()' < foo.p > foo.dll </pre></li>
+			<li>Translate an intermediate file into a DLL:
+			<pre>i2m PE:dll < foo.p > foo.dll </pre></li>
+		</ul></li>
 	</ul>
 	</p>
 </body>
