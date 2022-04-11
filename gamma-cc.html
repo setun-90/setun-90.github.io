@@ -38,11 +38,11 @@
 			<pre>lg l mylib.p /usr/lib/libblas.so</pre></li>
 			<li>Unlink all symbols in the intermediate file <code>mylib</code> from a BLAS implementation:
 			<pre>lg u mylib.p /usr/lib/libblas.so</pre></li>
-			<li>Combine symbols from intermediate files <code>foo</code>, <code>bar</code> and <code>baz</code> into qux:
+			<li>Combine symbols from intermediate files <code>foo</code>, <code>bar</code> and <code>baz</code> into <code>qux</code>:
 			<pre>lg a qux.p -f foo.p -f bar.p -f baz.p</pre></li>
 			<li>Rename a symbol <code>max: nmax(a: nmax, b: nmax)</code> to <code>_max: nmax(a: nmax, b: nmax)</code>:
 			<pre>lg e qux.p -s 'max: nmax(a: nmax, b: nmax)=_max: nmax(a: nmax, b: nmax)' </pre></li>
-			<li>Replace the definition of symbol <code>max: nmax(a: nmax, b: nmax)</code> with the definition in foo:
+			<li>Replace the definition of symbol <code>max: nmax(a: nmax, b: nmax)</code> with the definition in <code>foo</code>:
 			<pre>lg e qux.p -d 'max: nmax(a: nmax, b: nmax)' -f foo.p </pre></li>
 			<li>Remove a symbol <code>max: nmax(a: nmax, b: nmax)</code>:
 			<pre>lg d qux.p 'max: nmax(a: nmax, b: nmax)'</pre></li>
