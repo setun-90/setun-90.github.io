@@ -51,14 +51,15 @@
 		<li>Type system: the basic types were rationalized and made consistent (e.g. <code>n1</code>,<code>n2</code>,<code>n4</code>,<code>n8</code> and so on for unsigned types, and <code>d1</code>,<code>d2</code>,<code>d4</code> and so on for floating-point types, where the number refers to the size of the type - this allows still supporting non-standard arches and byte sizes with considerably less byzantine type names);</li>
 		<li>Integer promotions: an unsigned integer, if promoted, will be promoted to signed integer type of greater size, in all circumstances;</li>
 		<li>Operator precedence: the bitwise operators are finally put in their proper precedence, ending the <code>(a & b) == c</code> infelicity;</li>
-		<li>Syntax: operators are spelt differently, notably casting and pointer dereference, to eliminate the need for the lexer hack, and initializations employ type inference (with casts available in case one needs a short rather than a byte);</li>
+		<li>Syntax: operators are spelt differently, notably casting and pointer dereference, to eliminate the need for the lexer hack, and initializations employ type inference (with functions available in case one needs a short rather than a byte);</li>
 		<li>Behavior: some forms of undefined behavior are eliminated, while others are introduced, for reasons which will be explained;</li>
 	</ul>
 	and the points which I took the liberty of eliminating were:
 	<ul>
 		<li>File inclusion: this is made redundant with the linkage process described, and is also explained in the implementation notes;</li>
-		<li>Null pointers: again, unions will provide a solution that will be illustrated in some examples;</li>
+		<li>Null pointers: again, unions and overloads will provide a solution that will be illustrated in some examples;</li>
 		<li>Integer conversions: a signed integer will <em>never</em> be converted <em>implicitly</em> to an unsigned integer type, period;</li>
+		<li>Casts: as it turns out, they are redundant at best and invalid at worst (e.g. casting <code>float</code> to <code>int</code> is an attempt at ignoring rounding), so there's no real loss here;</li>
 		<li>Arithmetic conversions: arithmetic operations should be interpreted as operating in infinite precision, regardless of the size of the operands, so the operands don't need to be of the same type as in C;</li>
 		<li>Uninitialized variable reads: a variable should be written to before any read, so it makes no sense for the language to allow otherwise;</li>
 		<li>Other conversions: in fact, some, like <code>*((float *)&i)</code>, are undefined behavior (due to differing alignments) even in C, and that pointer conversion is better handled by unions, so there's arguably no loss here;</li>
