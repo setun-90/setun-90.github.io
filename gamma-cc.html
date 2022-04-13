@@ -19,11 +19,24 @@
 		<li>Simple standard library: apart from unicode support, abstract data types and a different organization, Gamma follows the words of Bjarne Stroustroup, providing &quot;that which every implementer must support so that every programmer can rely on it&quot;;</li>
 		<li>Cleaned up linkage: unlike the C family, Gamma uses a linkage procedure designed deliberately with interprocedural optimization in mind.</li>
 	</ul>
-	This results in three main programs for this reference implementation:
-	<ul>
-		<li><code>g2i</code>, which works as a function and translates a source or header unit to an intermediate format, only performing syntactic and semantic checks;</li>
-		<li><code>lg</code>, which works as an archiver and edits intermediate files by adding, replacing or removing functions, and on some platforms linking those files to shared libraries; and</li>
-		<li><code>i2m</code>, which works like <code>g2i</code> and transforms an intermediate format file into a target machine language. For now, the main target is LLVM IR.</li>
+	This results in:
+	<ul><li>Three compilation programs:
+		<ul>
+			<li><code>g2i</code>, which works as a function and translates a source or header unit to an intermediate format, only performing syntactic and semantic checks;</li>
+			<li><code>lg</code>, which works as an archiver and edits intermediate files by adding, replacing or removing functions, and on some platforms linking those files to shared libraries; and</li>
+			<li><code>i2m</code>, which works like <code>g2i</code> and transforms an intermediate format file into a target machine language (LLVM IR by default for now);</li>
+		</ul></li>
+	     <li>Two main libraries:
+		<ul>
+			<li><code>libg</code>, which implements the functions of the Gamma standard declarations; and</li>
+			<li><code>grt</code>, which implements the runtime behavior of the Gamma language;</li>
+		</ul></li>
+	     <li>Three execution programs:
+		<ul>
+			<li><code>ge</code>, which just executes a program in a similar way to <code>ld.so</code>;</li>
+			<li><code>gp</code>, which profiles a program; and</li>
+			<li><code>gt</code>, which traces a program.</li>
+		</ul></li>
 	</ul>
 	Example usages:
 	<ul>
