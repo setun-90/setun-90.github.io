@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Enlightened Ricing</title>
+	<meta charset="utf-8" />
+	<link rel="icon" href="/logo-fill.svg" />
+	<link rel="stylesheet" href="/global.css" />
+</head>
+<body>
+	<div id="banner">
+		<img id="logo" src="/logo-fill.svg" />
+		<h1 id="title">Enlightened Ricing</h1>
+	</div>
+	<h2>-fparty-like-its-1969</h2>
+	<p>Yes, I am a Gentoo user. Yes, I do use sway. Yes, I do use most of my applications from PTYs on the command line. Yes, I have both broken and recovered my system by myself.</p>
+	<p>And no, I do not submit bug reports with optimizations. No, I do not use <code>-O3</code>. No, I do not (always) sneer at Ubuntu users. No, I do not dual-boot with Windows.</p>
+	<p>Is it ricing then? I don't know. I just use this term because everybody I meet comments on my black screens and I often don't have enough time to explain most of my choices. It's not my fault that communication is perhaps a philosophically unsolvable problem, for both machines and organisms, a problem to which every solution is necessarily incomplete.</p>
+	<p>Anyway, as a Gentoo user, I do rice my CFLAGS. However, ever since I began with CFLAGS in 2017 on FreeBSD, before I even went with Gentoo, I decided I would follow my own path. I decided I wouldn't do the rat race of CFLAGS boasting. After all, optimization is about tailoring for one's own machine, and things which work on one machine won't necessarily work on another. I decided I would enlighten myself.</p>
+	<p>For that, however, one needs information. And after several years of continuously researching and tracking the state of optimization (I still remember being elated when GCC 7-8 fixed Graphite), I have come to the conclusion that a lot of information on the Internet is being presented without context. And because optimization, even static, is intrinsically contextual, that translates to potentially disastrous wastes of processing time by ricers who then get the activity of optimization dismissed by not just their peers, but authorities who actually hold sway. So, I write here my own practices, to serve not as a guide, but as an example, a reflection, a point of reference from which others may start. I will be writing for GCC >10 on Gentoo; I sadly (or fortunately?) don't have a comments section, but I may perhaps invite a leisurely discussion (as well as indications of errors) by email.</p>
+
+	<h3>The Aligned Movement</h3>
+	<p>TL;DR alignment isn't the end nor even the beginning: it is the precondition for all other optimizations to be meaningful.<br />
+	Let me put it another way: a cache hit is worth at least 16 padding NOPs.</p>
+	<p>Of course, I did not realize this when I started. For as much as I often spent time drawing up ISAs of my own, I considered cache memory to be a symptom of bad design or architecture, a consequence of either cowardice or laziness from motherboard and DRAM manufacturers, whom the standards pander to by creating deliberately crippled memory interfaces designed to encourage a race to rock-bottom prices and absurd profit margins. Since then, my stance has softened and I now consider cache memory to be a necessary evil, and like any necessary evil, I believe it is better to have an honest and frank discussion rather than ignore it.</p>
+	<p>Believe me when I say that it is almost impossible to exaggerate the importance of caching to modern computers. Even the Intel 8088 had a prefetch queue - which was enough to make most recommendations for optimizing for it similar to those for RISC processors: load as much as possible into registers and operate from there. <a href="https://stackoverflow.com/a/19570226">This Stack Overflow answer</a> and <a href="https://users.cs.northwestern.edu/~robby/courses/322-2013-spring/mytkowicz-wrong-data.pdf">this paper</a> illustrate the effects best in my opinion, and to my great dismay, GCC 12 <em>still</em> aligns to 8 bytes by default on Skylake. Go ahead, look at the <a href="https://github.com/gcc-mirror/gcc/blob/master/gcc/config/i386/x86-tune-costs.h#L2107">tuning header</a>: not only is it still 16:11:8 (meaning, in my understanding, align to 16 bytes if the boundary is closer than 11 bytes else to 8 bytes), it's also the same for Ice Lake and Alder Lake as of 2023! And <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=81616">this bug</a> doesn't seem to have helped much.<br />
+	Of course, alignment is machine specific, and without manufacturer information it can only be found through trial and error, but at least once it's done, it's done. There aren't that many values to test, and if a good package to measure can be found, the best value can be found in relatively little time.</p>
+	<p>Also: why does GCC make alignment a source-level optimization option (<code>-f...</code>) and not a code generation option (<code>-m...</code>)? Given how unaligned memory accesses are undefined behavior in C, a program containing them has much bigger problems than just address tuning.</p>
+
+	<h3><code>-O3</code> Should Not Exist</h3>
+	<p>Yes, you read that right. Why? One noun: PGO. Profile-guided optimization.</p>
+	<p>PGO is... messy. After all, you need to compile your program twice, you need to provide an accurate simulation of your workload, you need to save profile files, etc. Basically, PGO is what a JIT compiler does, except C compilers can't do this in production mainly because C and C++ felt some strange need to be compatible with the pre-JIT era. Preparing for some apocalypse where we will have to go back to calculating on vacuum-tube implementations of PDP-7s in a Fallout-like world? You tell me.<br />
+	So what does PGO have to do with <code>-O3</code>? Well, the GCC documentation is quite long, but if you read it in detail, you should start to see that most of <code>-O3</code>'s optimizations require profiling to be effective. Sure, there are only fleeting references to static vs. profiled analysis, but the mere description of those optimizations should already raise the question of where the needed information should come from. In particular, many of the loop optimizations critically depend on profiling for their application to be decided, and my experience is that GCC's static analysis of loops is quite lacking. Even my informal benchmarks, like sourcing .bashrc, have detected changes when compiling with <code>-O3</code> vs <code>-O2</code>. Case in point, <code>-fprofile-use</code> and <code>-fprofile-generate</code> turn on not only <code>-O3</code>'s optimizations, but also other, even more drastic optimizations. So not only is <code>-O3</code> useless, it's technically redundant. The only use I can think of is as a blanket manner of turning on optimizations if your flags will be appended to previous flags which specified <code>-O2</code>, because most packages doing PGO will generate their own files, so it would not be up to you to specify <code>-fprofile-use</code> and <code>-fprofile-generate</code>.<br />
+	That said, some <code>-O3</code> optimizations are indeed worthwhile, mainly unrelated to loops however. Enable them individually after <code>-O2</code>.</p>
+
+	<h3>The Tip of the Iceberg</h3>
+	<p>Modern software could not exist without libraries, yet I have lost count of how many times people share stories of applying LTO/Graphite/visibility-inlines-hidden/insert-latest-new-optimization-infrastructure on <em>Firefox</em>. Or, even more amusing, when people spend several monastic hours compiling LibreOffice... and then spend several more monastic hours compiling KDE Plasma or (God forbid) Chromium.<br />
+	In short, libraries enable <em>performance</em> reuse in addition to code reuse, so optimize libraries before optimizing applications. This is why scientific libraries are so consolidated nowadays, even being open-source: optimization is simply something you're not supposed to redo (drivers are consolidated for other reasons, but that's another story). Ditto for compilers, linkers, assemblers, in fact almost anything machine-related. If you find yourself redoing something, stop (immediately), think, plan, and then do.<br />
+	Of course, there are also pitfalls and risks to this. A broken system library can easily make an unbootable system. (Nightmare example: a broken GNU Readline.) Be rigorous, back up, have a LiveUSB on hand, chose the flag wisely and just generally have a plan when trying it out.</p>
+	<p>Speaking of GNU Readline, despite being a nightmare example, it is actually my goto package on Gentoo to test optimizations, because it:
+	<ol>
+		<li>compiles quickly (~12 seconds on my machine as of 2023);</li>
+		<li>is used by bash, so you can have fast feedback just by logging out and back in at the most; and</li>
+		<li>is used by Python and systemd, and thus has a <em>big</em> impact on system performance.</li>
+	</ol>
+	Other categories of Gentoo packages to test are:
+	<ul>
+		<li>General and text libraries like glibc, boost, libpcre, fribidi, icu, and gettext;</li>
+		<li>System libraries like libcap, pam and libseccomp;</li>
+		<li>Language implementations like Python, Ruby, Perl and Awk;</li>
+		<li>Utility programs like GNU Core Utilities, <code>tar</code>, and <code>dc</code> - yes, they are theoretically applications, but because the shell uses them in the manner of subroutines, they can be considered a sort of shell &quot;standard library&quot;.</li>
+		<li>Graphics libraries and programs, like the X server/Wayland, libdrm, Mesa and the window manager;</li>
+		<li>Scientific libraries like CGAL, LAPACK and BLAS; and</li>
+		<li>GUI libraries like GTK+ and Qt.</li>
+	</ul>
+	The smarter ones may be preparing to ask me &quot;What about the kernel?&quot; I kept that for last because:
+	<ol>
+		<li>A buggy kernel <em>can</em> damage hardware, so you won't be spending time and money on just electricity in that case; and</li>
+		<li>The kernel behaves in rather strange ways when it comes to optimization: a seemingly reasonable flag (-funswitch-loops) on readline which sped both it and bash up slowed down my kernel. For as much as I am perhaps the most reckless CFLAGS tester out there, I still respect the kernel devs when it comes to their code.</li>
+	</ol>
+
+	<h3>So what are my flags?</h3>
+	<p>To which I will answer: not those you would use ;-)<br />
+	Speaking more seriously, though, as I wrote, optimization is always contextual. The mere existence of the space-time tradeoff should already suggest care, rigor and testing testing testing when it comes to optimizations. Of course, this is no substitute for real profiling and benchmarking, but this alone should at least cut down on the amount of effort and yield results quickly.</p>
+</p>
+</body>
+</html>
