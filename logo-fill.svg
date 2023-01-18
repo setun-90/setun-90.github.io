@@ -1,19 +1,33 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="300" width="300" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
-	<metadata>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<metadata id="license" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
 		<rdf:RDF>
 			<cc:Work rdf:about="">
-				<dc:format>image/svg+xml</dc:format>
-				<dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-				<dc:title/>
+				<cc:license rdf:resource="http://creativecommons.org/licenses/by-sa/3.0" />
+				<cc:attributionName>Daniel Campos do Nascimento</cc:attributionName>
 			</cc:Work>
 		</rdf:RDF>
 	</metadata>
-	<g transform="translate(0,-752.36218)">
-		<rect fill-rule="nonzero" transform="translate(0,752.36218)" height="300" width="300" y="0" x="0" fill="#040731"/>
-		<path stroke-linejoin="miter" d="m75,150,150,0" transform="translate(0,752.36218)" stroke="#FFF" stroke-linecap="butt" stroke-miterlimit="4" stroke-dasharray="none" stroke-width="10" fill="none"/>
-		<path stroke-linejoin="miter" d="m135,85-60,0,0,130,60,0" transform="translate(0,752.36218)" stroke="#FFF" stroke-linecap="butt" stroke-miterlimit="4" stroke-dasharray="none" stroke-width="10" fill="none"/>
-		<path style="baseline-shift:baseline;block-progression:tb;color:#000000;direction:ltr;text-indent:0;text-align:start;enable-background:accumulate;text-transform:none;" fill="#FFF" d="m164.14,832.36-14.142,0,67.938,70-67.938,70,14.142,0,64.389-66.469,3.3688-3.5312-3.3688-3.5312z"/>
-	</g>
+	<defs>
+		<polygon id="etoile" points="
+			0,-100
+			19.13417,-46.19398
+			70.71068,-70.71068
+			46.19398,-19.13417
+			100,0
+			46.19398,19.13417
+			70.71068,70.71068
+			19.13417,46.19398
+			0,100
+			-19.13417,46.19398
+			-70.71068,70.71068
+			-46.19398,19.13417
+			-100,0
+			-46.19398,-19.13417
+			-70.71068,-70.71068
+			-19.13417,-46.19398
+			" fill="#fff" />
+	</defs>
+	<rect width="400" height="400" fill="#003"/>
+	<use xlink:href="#etoile" transform="translate(200 200) scale(1.25)" />
 </svg>
