@@ -15,6 +15,9 @@ h3, h4, h5 {
 p {
 	margin-top: 0;
 }
+:target {
+	background-color: #00BB4488;
+}
 
 #banner {
 	display: flex;
