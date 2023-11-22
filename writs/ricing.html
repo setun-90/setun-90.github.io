@@ -23,8 +23,8 @@
 	Let me put it another way: a cache hit or miss can compensate a misoptimization or negate a true optimization entirely, so benchmarking unaligned code will essentially inject the noise of random code layouts in the cache into the times, rendering them essentially useless.</p>
 	<p>Truth be told, I'll admit I overlooked this for a rather long time. I considered cache memory to be a symptom of bad design or architecture, a cop-out by motherboard and DRAM manufacturers, whom the standards pander to by creating deliberately crippled memory interfaces designed to encourage a race to rock-bottom prices and absurd profit margins. Since then, my stance has softened and I now consider cache memory to be a necessary evil, and like any necessary evil, I believe it is better to have an honest and frank discussion rather than ignore it.</p>
 	<p>Believe me when I say that it is almost impossible to exaggerate the importance of caching to modern computers. <a id="stack_overflow" href="https://stackoverflow.com/a/19570226">This Stack Overflow answer</a> and <a href="https://users.cs.northwestern.edu/~robby/courses/322-2013-spring/mytkowicz-wrong-data.pdf">this paper</a> underline the effects best in my opinion. Unfortunately, GCC 12 <em>still</em> aligns functions to 16 bytes with <code>-O2</code> on Skylake - <em>one-quarter</em> the cache line size. Go ahead, look at the <a href="https://github.com/gcc-mirror/gcc/blob/master/gcc/config/i386/x86-tune-costs.h#L2110">tuning header</a>: it's also the same for Ice Lake and Alder Lake as of 2023! And <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=81616">this bug</a> doesn't seem to have helped much.<br />
-	Alignment isn't simple, however. For example, aligning nested loops is generally counterproductive, and if a function containing loops is itself called from a loop, then that function's loops will count as nested loops towards the running time, so speeding up a loop can indeed slow down the rest of a program. Aligning jumps is, in my experience, <em>completely</em> useless - I would actually like to know of any stories of improvements with it. Aligning functions is indeed best, but you <em>have</em> to know your cache line size - anything lower alignment will give (potentially massive) variations, as random starting addresses cause cache lines to randomly end up in the middle of loops or not.<br />
-	In spite of the pitfalls, at least once it's done, it's done. There aren't that many values to test, and if a good package to measure can be found (see <a href="#measure">below</a>), the best value can be found in relatively little time.</p>
+	Alignment isn't simple, however. For example, aligning nested loops is generally counterproductive, and if a function containing loops is itself called from a loop, then that function's loops will count as nested loops towards the running time, so speeding up a loop can indeed slow down the rest of a program. Aligning functions is indeed best, but you <em>have</em> to know your cache line size - anything lower alignment will give (potentially massive) variations, as random starting addresses cause cache lines to randomly end up in the middle of loops or not. Aligning jumps can improve performance even more, but it can also bloat code considerably, so do it wisely (see <a href="#measure">below</a>).<br />
+	With all of that said, among optimizations, alignment is the most cost-effective bar none. There aren't that many values to test, and if a good package to measure can be found (see <a href="#measure">below</a>), the best value can be found in relatively little time. It is also safer than any other optimization and costs relatively little in compile time.</p>
 	<p>Also: I now don't understand why GCC would do alignment in the RTL (<code>-f...</code> instead of <code>-m...</code>). Generally, a program depending on alignment will take responsibility for it in its code, so it doesn't make sense to consider alignment as a property of source code. I know RTL is supposed to be close to machine language, but alignment is much more a detail of a machine language than an essential architectural question.</p>
 
 	<h3><code>-O3</code> Should Not Exist</h3>
@@ -37,7 +37,7 @@
 
 	<h3>The Tip of the Iceberg</h3>
 	<p>Modern software could not exist without libraries, yet I have lost count of how many times people share stories of applying LTO/Graphite/visibility-inlines-hidden/insert-latest-new-optimization-infrastructure on <em>Firefox</em>. Or, even more amusing, when people spend several monastic hours compiling LibreOffice... and then spend several more monastic hours compiling KDE Plasma or (God forbid) Chromium.<br />
-	In short, libraries enable <em>performance</em> reuse in addition to code reuse, so optimize libraries before optimizing applications. This is why scientific libraries are so consolidated nowadays, even being open-source: optimization is simply something you're not supposed to redo (drivers are consolidated for other reasons, but that's another story). Ditto for compilers, linkers, assemblers, in fact almost anything machine-related. If you find yourself redoing something, stop (immediately), think, plan, and then do.<br />
+	In short, libraries enable <em>performance</em> reuse in addition to code reuse, so optimize libraries before optimizing applications. This is why scientific libraries are so consolidated nowadays, even being open-source: optimization is simply something you're not supposed to redo (drivers are consolidated for other reasons which I will not go into). Ditto for compilers, linkers, assemblers, in fact almost anything machine-related. If you find yourself redoing something, stop (immediately), think, plan, and then do.<br />
 	Of course, there are also pitfalls and risks to this. A broken system library can easily make an unbootable system. (Nightmare example: a broken GNU Readline.) Be rigorous, back up, have a LiveUSB on hand, choose the flag wisely and just generally have a plan when trying it out.</p>
 	<p id="measure">Speaking of GNU Readline, despite being a nightmare example, it is actually my goto package on Gentoo to test optimizations, because it:
 	<ol>
@@ -50,7 +50,7 @@
 		<li>General and text libraries like boost, libpcre, fribidi, icu, and gettext;</li>
 		<li>System libraries like libcap, pam and libseccomp;</li>
 		<li>Language implementations like Python, Ruby, Perl and Awk;</li>
-		<li>Utility programs like GNU Core Utilities, <code>tar</code>, and <code>dc</code> - yes, they are theoretically applications, but because the shell uses them in the manner of subroutines, they can be considered a sort of shell &quot;standard library&quot;.</li>
+		<li>Utility programs like GNU Core Utilities, <code>tar</code>, and <code>grep</code> - yes, they are theoretically applications, but because the shell uses them in the manner of subroutines, they can be considered a sort of shell &quot;standard library&quot;.</li>
 		<li>Graphics libraries and programs, like the X server/Wayland, libdrm, Mesa and the window manager;</li>
 		<li>Scientific libraries like OpenCSG, LAPACK and BLAS; and</li>
 		<li>GUI libraries like GTK+ and Qt.</li>
@@ -60,6 +60,16 @@
 		<li>A buggy kernel <em>can</em> damage hardware, so you won't be spending time and money on just electricity in that case; and</li>
 		<li>The kernel behaves in rather strange ways when it comes to optimization: a seemingly reasonable flag (-funswitch-loops) on readline which sped both it and bash up slowed down my kernel. For as much as I am perhaps the most reckless CFLAGS tester out there, I still respect the kernel devs when it comes to their code.</li>
 	</ol>
+
+	<h3>Music in Noise</h3>
+	<p>On Linux, <code>perf</code> is literally the microscope of the optimizer. Do not use <code>time</code> for timing microoptimizations, as even if you manage to eliminate most variance from the reported time, you still won't get some vital metrics like cycles and prediction hit rates.<br />
+	Of the info that <code>perf stat [ -r $num ] $command</code> prints, the absolute most important info is the cycle count: to optimize anything, minimise this number. To minimise it, the general routes are:
+	<ol>
+		<li>Tweak alignments, as described above; and</li>
+		<li>Enumerate optimization combinations.</li>
+	</ol>
+	As for the second one, this is more involved than it seems.
+	</p>
 
 	<h3>So what are my flags?</h3>
 	<p>To which I will answer: not those you would use ;-)<br />
