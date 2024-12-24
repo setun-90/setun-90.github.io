@@ -11,21 +11,24 @@
 		<img id="logo" src="/logo-fill.svg" />
 		<h1 id="title">Titan</h1>
 	</div>
-	<h2>Don't do your runtime's job, let your runtime do your job for you</h2>
+	<h2>Icebergs for everyone</h2>
 	<h3>Synopsis</h3>
-	<p>Titan is a macro language for optimisable incremental search. In Titan, programs reduce terms to their normal forms according to the theory of graph reduction. For this, Titan defines:
+	<p>Titan is a development for optimisable incremental search and enumeration. In Titan, programs produce enumerations of solutions to queries by matching over enumerations of solutions to other queries. For this, Titan defines:
 	<ol>
-		<li>A <em>reference language</em> in which to express terms, including programs;</li>
+		<li>A <em>reference language</em> in which to express these rules;</li>
 		<li>A <em>standard library</em> by which to facilitate development; and</li>
 		<li><em>Implementation constraints</em> to provide performance guarantees.</li>
 	</ol>
 	</p>
 	<h3>Reference Language</h3>
-	<p>Titan's reference language is extremely simple: it is just a preorder traversal of a term graph. The caveat is that Titan also allows partial application (per the requirement of incremental search), so parentheses are required if a function must be partially applied.</p>
+	<p>Titan's reference language is extremely simple: it is just a preorder traversal of trees representing terms. The caveat is that Titan also allows partial application (per the requirement of incremental search), so parentheses are required if a function must be partially applied.</p>
 	<h3>Standard Library</h3>
-	<p>Titan's standard library is divided into three major categories: <em>Environment</em>, <em>Language</em>, and <em>Algorithms</em>.</p>
+	<p>Titan's standard library is divided into three major parts: <em>Environment</em>, <em>Language</em>, and <em>Algorithms</em>. All definitions in the standard library are abstract data types. Only the <em>Language</em> part is mandatory, and the two other parts can be defined in terms of it.</p>
 	<h4>Environment</h4>
+	The <em>Environment</em> part contains data types for interfacing with other systems.
 	<h4>Language</h4>
+	The <em>Language</em> part contains the abstract data types of the core constructs of the language.
 	<h4>Algorithms</h4>
+	The <em>Algorithms</em> part contains the abstract data types for complex operations on the core constructs of the language.
 </body>
 </html>
