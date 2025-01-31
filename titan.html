@@ -35,18 +35,18 @@
 	<h4>Alphabet</h4>
 	The alphabet of the Titan reference language is in the Unicode 10 character set. Several subsets are named here for future reference:
 	<ul>
-		<li>Letters, consisting of the union of the Unicode General Categories <i>Li</i>, <i>Lu</i>, <i>Lt</i>, <i>Lm</i> and <i>Lo</i>, named <math>letter</math>;</li>
+		<li>Letters, consisting of the union of the Unicode General Categories <i>Li</i>, <i>Lu</i>, <i>Lt</i>, <i>Lm</i> and <i>Lo</i>, named <var>letter</var>;</li>
 		<li>Digits, consisting of the following subsets:<ul>
-			<li>the decimal digits <code>0123456789</code>, named <math>digit</math>,<br />
-			and the nonzero digits <math>ndigit = digit - <ms>0</ms></math>;</li>
-			<li>the binary digits <code>01</code>, named <math>bdigit</math>;</li>
-			<li>the octal digits <code>01234567</code>, named <math>odigit</math>;</li>
-			<li>the hexadecimal digits <code>0123456789ABCDEF</code>, named <math>hdigit</math>;</li>
+			<li>the decimal digits <code>0123456789</code>, named <var>digit</var>,<br />
+			and the nonzero digits <var>ndigit</var> = <var>digit</var> - <code>0</code>;</li>
+			<li>the binary digits <code>01</code>, named <var>bdigit</var>;</li>
+			<li>the octal digits <code>01234567</code>, named <var>odigit</var>;</li>
+			<li>the hexadecimal digits <code>0123456789ABCDEF</code>, named <var>hdigit</var>;</li>
 		</ul>
 		</li>
-		<li>Alphanumerics, named <math>alpha = digit|letter</math>;</li>
+		<li>Alphanumerics, named <var>alpha</var> = <var>digit</var>|<var>letter</var>;</li>
 		<li>Punctuation and delimiters, consisting of <code>()[]{}'"@</code>;</li>
-		<li>Symbols, consisting of <code>`.\/%^*+-#&amp;|~=&lt;&gt;>!?:;,</code>, named <math>symbol</math>;</li>
+		<li>Symbols, consisting of <code>`.\/%^*+-#&amp;|~=&lt;&gt;>!?:;,</code>, named <var>symbol</var>;</li>
 		<li>Whitespace, consisting of the Unicode General Categories <i>Zs</i>, <i>Zl</i>, <i>Zp</i> and <i>Cc</i></li>
 		<li>The underscore <code>_</code>.</li>
 	</ul>
@@ -54,30 +54,30 @@
 	<h4>Tokens</h4>
 	<ul>
 		<li>The delimiters <code>() [] {}</code>;</li>
-		<li>Names, denoted by the regular expression <math>name</math><br />
-		<math> (<ms>_</ms>|letter|symbol)(<ms>_</ms>|alpha|symbol)* </math>
+		<li>Names, denoted by the regular expression <var>name</var><br />
+		(<code>_</code>|<var>letter</var>|<var>symbol</var>)(<code>_</code>|<var>alpha</var>|<var>symbol</var>)<sup>*</sup>
 		</li>
-		<li>Variables, defined by the regular expression <math>variable</math><br />
-		<math><ms>@</ms>name</math>
+		<li>Variables, defined by the regular expression <var>variable</var><br />
+		<code>@</code><var>name</var>
 		</li>
-		<li>Numbers, defined by the regular expressions <math>number</math><br />
-		<math>ndigit(<msup>digit <mo>+</mo></msup><msup><math>(.<msup>digit <mo>+</mo></msup>)</math><mo>?</mo></msup>|<msup><math>(.<msup>digit <mo>+</mo></msup>)</math> <mo>?</mo></msup> <msup><math>(<ms>e</ms> <msup><ms>-</ms><mo>?</mo></msup> ndigit <msup>digit <mo>*</mo></msup>)</math><mo>?</mo></msup>)</math><br />
-		<math><ms>0</ms>(<ms>b</ms><msup>bdigit<mo>+</mo></msup>|<ms>o</ms><msup>odigit<mo>+</mo></msup>|<ms>x</ms><msup>hdigit<mo>+</mo></msup>)</math><br />
-		<math><ms>'</ms>(<msup><math>(<ms>\</ms>|<ms>'</ms>)</math><mo>-</mo></msup>|<ms>\</ms>(<ms>\</ms>|<ms>'</ms>))<ms>'</ms></math><br />
+		<li>Numbers, defined by the regular expressions <var>number</var><br />
+		<var>ndigit</var>(<var>digit</var> <sup>+</sup>(.<var>digit</var> <sup>+</sup>)<sup>?</sup>|(.<var>digit</var> <sup>+</sup>) <sup>?</sup>(<code>e-</code><sup>?</sup><var>ndigit</var><var>digit</var> <sup>*</sup>)<sup>?</sup>)<br />
+		<code>0</code>(<code>b</code><var>bdigit</var><sup>+</sup>|<code>o</code><var>odigit</var><sup>+</sup></msup>|<code>x</code><var>hdigit</var><sup>+</sup>)<br />
+		<code>'</code>((<code>\</code>|<code>'</code>)<sup>-</sup>|<code>\</code>(<code>\</code>|<code>'</code>))<code>'</code><br />
 		</li>
 		<li>Strings, defined by the regular expression <math>string</math><br />
-		<math><ms>"</ms><msup><math>(<msup><ms>"</ms><mo>-</mo></msup>|<ms>\</ms>(<ms>"</ms>)|<ms>\</ms>))</math> <mo>*</mo></msup><ms>"</ms></math>
+		<code>"</code>(<code>"</code><sup>-</sup>|<code>\</code>(<code>"</code>)|<code>\</code>)) <sup>*</sup><code>"</code>
 		</li>
 		<li>Comments, defined by the regular expressions<br />
-		<math><ms>\*</ms><msup><msup><math>(*\)</math><mo>-</mo></msup><mo>*</mo></msup><ms>*\</ms></math><br />
-		<math><ms>\\</ms><msup><msup><math>(newline)</math><mo>-</mo></msup><mo>*</mo></msup>newline</math>
+		<code>\*</code>(<code>*\</code>)<sup>-*</sup><code>*\</code><br />
+		<code>\\</code>(<var>newline</var>)<sup>-*</sup><var>newline</var>
 		</li>
 	</ul>
 
 	<h4>Grammar</h4>
 	The full grammar of the Titan reference language is:<br />
-	<math>E ::= | {AE}E | (E)E | AE</math><br />
-	<math>A ::= name | variable | number | string | [AE]</math><br />
+	<var>E</var> ::= | {<var>A</var><var>E</var>}<var>E</var> | (<var>E</var>)<var>E</var> | <var>A</var><var>E</var><br />
+	<var>A</var> ::= <var>name</var> | <var>variable</var> | <var>number</var> | <var>string</var> | [<var>A</var><var>E</var>]<br />
 	Note that there are no reserved identifiers.
 
 

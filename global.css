@@ -3,8 +3,8 @@ body {
 	margin: 0 auto;
 	width: 80%;
 }
-ms {
-	font-family: monospace;
+code {
+	font-size: 1.3em;
 }
 
 td {
