@@ -11,9 +11,9 @@
 		<img id="logo" src="/logo-fill.svg" />
 		<h1 id="title">Titan</h1>
 	</div>
-	<h2>Icebergs for everyone</h2>
+	<h2>Databases for the people</h2>
 	<h3>Synopsis</h3>
-	<p>Titan is a development for optimisable incremental search and enumeration. In Titan, programs produce enumerations of solutions to queries by matching over enumerations of solutions to other queries. For this, Titan defines:
+	<p>Titan is a development platform for incremental optimisable search and enumeration. In Titan, programs are defined as relations between values, which can be defined by formulae according to rules for application and search. For this, Titan defines:
 	<ol>
 		<li>A <em>reference language</em> in which to express these rules;</li>
 		<li>A <em>standard library</em> by which to facilitate development; and</li>
@@ -21,14 +21,22 @@
 	</ol>
 	</p>
 	<h3>Reference Language</h3>
-	<p>Titan's reference language is extremely simple: it is just a preorder traversal of trees representing terms. The caveat is that Titan also allows partial application (per the requirement of incremental search), so parentheses are required if a function must be partially applied.</p>
+	<p>Titan's reference language is extremely simple: conceptually, programs are relations specified as sums of rows, each row relating the values in its columns together. The major tricks added to this, however, are:
+	<ol>
+		<li>Relations can be partially applied, yielding another relation whose columns aren't bound to values given in the original application;</li>
+		<li>A row of a single column decays to the value in that column;</li>
+		<li>A sum of a single row decays to that row; and</li>
+		<li>Unary relations correspond to column types.</li>
+	</ol>
+	Semantically, sums represent searches over rows, and rows represent patterns whose values are related.
+	</p>
 	<h3>Standard Library</h3>
-	<p>Titan's standard library is divided into three major parts: <em>Environment</em>, <em>Language</em>, and <em>Algorithms</em>. All definitions in the standard library are abstract data types. Only the <em>Language</em> part is mandatory, and the two other parts can be defined in terms of it.</p>
-	<h4>Environment</h4>
-	The <em>Environment</em> part contains data types for interfacing with other systems.
+	<p>Titan's standard library is divided into three major parts: <em>Language</em>, <em>Environment</em>, and <em>Algorithms</em>. All definitions in the standard library are abstract data/negative types, meaning they are defined in terms of their projection relations. Only the <em>Language</em> part is mandatory, and the two other parts can be defined in terms of it.</p>
 	<h4>Language</h4>
 	The <em>Language</em> part contains the abstract data types of the core constructs of the language.
 	<h4>Algorithms</h4>
 	The <em>Algorithms</em> part contains the abstract data types for complex operations on the core constructs of the language.
+	<h4>Environment</h4>
+	The <em>Environment</em> part contains data types for interfacing with other systems.
 </body>
 </html>
