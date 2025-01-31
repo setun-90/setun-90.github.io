@@ -19,7 +19,9 @@
 		<li>A <em>standard library</em> by which to facilitate development; and</li>
 		<li><em>Implementation constraints</em> to provide performance guarantees.</li>
 	</ol>
+	Regarding the final point, a major intended objective is for implementations to be able to optimise a subset of the language enough to work in embedded programming.
 	</p>
+
 	<h3>Reference Language</h3>
 	<p>Titan's reference language is extremely simple: conceptually, programs are relations specified as sums of rows, each row relating the values in its columns together. The major tricks added to this, however, are:
 	<ol>
@@ -30,13 +32,23 @@
 	</ol>
 	Semantically, sums represent searches over rows, and rows represent patterns whose values are related.
 	</p>
+
 	<h3>Standard Library</h3>
 	<p>Titan's standard library is divided into three major parts: <em>Language</em>, <em>Environment</em>, and <em>Algorithms</em>. All definitions in the standard library are abstract data/negative types, meaning they are defined in terms of their projection relations. Only the <em>Language</em> part is mandatory, and the two other parts can be defined in terms of it.</p>
 	<h4>Language</h4>
 	The <em>Language</em> part contains the abstract data types of the core constructs of the language.
+
 	<h4>Algorithms</h4>
 	The <em>Algorithms</em> part contains the abstract data types for complex operations on the core constructs of the language.
+
 	<h4>Environment</h4>
 	The <em>Environment</em> part contains data types for interfacing with other systems.
+
+
+	<h3>Reference Implementation</h3>
+	Titan's reference implementation will be code-named Othrys, after the mountain home of the Greek titans (as opposed to Olympus, the home of the Olympian deities).
+
+	<h3>Bootstrap Implementation</h3>
+	Titan's bootstrap implementation is code-named Chaos, after the root deity of the Greek Pantheon. An initial idea is to write it in Prolog, but Twelf might also be appropriate.
 </body>
 </html>
