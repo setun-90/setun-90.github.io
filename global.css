@@ -47,3 +47,9 @@ p {
 	#logo {
 		height: 4em; width: 4em;
 	}
+@media (prefers-color-scheme: dark) {
+body {
+	background-color: #000033;
+	color: #FFFFFF;
+}
+}
