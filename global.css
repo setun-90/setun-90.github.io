@@ -52,4 +52,10 @@ body {
 	background-color: #000033;
 	color: #FFFFFF;
 }
+a {
+	color: #00FFFF;
+}
+a:visited {
+	color: #FF00FF;
+}
 }
