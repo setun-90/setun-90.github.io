@@ -35,8 +35,8 @@
 	<h4>Alphabet</h4>
 	The alphabet of the Titan reference language is in the Unicode 10 character set. Several subsets are named here for future reference:
 	<ul>
-		<li>Letters, consisting of the union of the Unicode General Categories <i>Li</i>, <i>Lu</i>, <i>Lt</i>, <i>Lm</i> and <i>Lo</i>, named <var>letter</var>;</li>
-		<li>Digits, consisting of the following subsets:<ul>
+		<li>Letters, consisting of the Unicode General Category <i>L</i>, named <var>letter</var>;</li>
+		<li>Digits, consisting of the Unicode General Category <i>N</i>, along with the following subsets:<ul>
 			<li>the decimal digits <code>0123456789</code>, named <var>digit</var>,<br />
 			and the nonzero digits <var>ndigit</var> = <var>digit</var> - <code>0</code>;</li>
 			<li>the binary digits <code>01</code>, named <var>bdigit</var>;</li>
@@ -46,8 +46,8 @@
 		</li>
 		<li>Alphanumerics, named <var>alpha</var> = <var>digit</var>|<var>letter</var>;</li>
 		<li>Punctuation and delimiters, consisting of <code>()[]{}'"@</code>;</li>
-		<li>Symbols, consisting of <code>`.\/%^*+-#&amp;|~=&lt;&gt;>!?:;,</code>, named <var>symbol</var>;</li>
-		<li>Whitespace, consisting of the Unicode General Categories <i>Zs</i>, <i>Zl</i>, <i>Zp</i> and <i>Cc</i></li>
+		<li>Symbols, consisting of <code>`.\/%^*+-#&amp;|~=&lt;&gt;!?:;,</code>, named <var>symbol</var>;</li>
+		<li>Whitespace, consisting of the union of the Unicode General Categories <i>Zs</i>, <i>Zl</i>, <i>Zp</i> and <i>Cc</i>; and</li>
 		<li>The underscore <code>_</code>.</li>
 	</ul>
 
@@ -61,16 +61,16 @@
 		<code>@</code><var>name</var>
 		</li>
 		<li>Numbers, defined by the regular expressions <var>number</var><br />
-		<var>ndigit</var>(<var>digit</var> <sup>+</sup>(.<var>digit</var> <sup>+</sup>)<sup>?</sup>|(.<var>digit</var> <sup>+</sup>) <sup>?</sup>(<code>e-</code><sup>?</sup><var>ndigit</var><var>digit</var> <sup>*</sup>)<sup>?</sup>)<br />
-		<code>0</code>(<code>b</code><var>bdigit</var><sup>+</sup>|<code>o</code><var>odigit</var><sup>+</sup></msup>|<code>x</code><var>hdigit</var><sup>+</sup>)<br />
-		<code>'</code>((<code>\</code>|<code>'</code>)<sup>-</sup>|<code>\</code>(<code>\</code>|<code>'</code>))<code>'</code><br />
+		<var>ndigit</var>(<var>digit</var> <sup>+</sup>(.<var>digit</var> <sup>+</sup>)<sup>?</sup>|(.<var>digit</var> <sup>+</sup>) <sup>?</sup>(<code>e-</code><sup>?</sup><var>ndigit</var> <var>digit</var> <sup>*</sup>)<sup>?</sup>)<br />
+		<code>0</code>(<code>b</code><var>bdigit</var><sup>+</sup>|<code>o</code><var>odigit</var><sup>+</sup>|<code>x</code><var>hdigit</var><sup>+</sup>)<br />
+		<code>'</code>((<code>\</code>|<code>'</code>)<sup>-</sup>|<code>\</code>(<code>\</code>|<code>'</code>))<code>'</code>
 		</li>
-		<li>Strings, defined by the regular expression <math>string</math><br />
-		<code>"</code>(<code>"</code><sup>-</sup>|<code>\</code>(<code>"</code>)|<code>\</code>)) <sup>*</sup><code>"</code>
+		<li>Strings, defined by the regular expression <var>string</var><br />
+		<code>"</code>(<code>"</code><sup>-</sup>|<code>\</code>(<code>"</code>|<code>\</code>)) <sup>*</sup><code>"</code>
 		</li>
 		<li>Comments, defined by the regular expressions<br />
-		<code>\*</code>(<code>*\</code>)<sup>-*</sup><code>*\</code><br />
-		<code>\\</code>(<var>newline</var>)<sup>-*</sup><var>newline</var>
+		<code>\*</code>(<code>*\</code>)<sup>-</sup><code>*\</code><br />
+		<code>\\</code>(<var>newline</var>)<sup>-</sup><var>newline</var>
 		</li>
 	</ul>
 
