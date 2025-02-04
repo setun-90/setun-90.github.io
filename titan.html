@@ -25,7 +25,7 @@
 	<h3>Reference Language</h3>
 	<p>Titan's reference language is extremely simple: conceptually, programs are relations specified as sums of rows, each row relating the values in its columns together. The major tricks added to this, however, are:
 	<ol>
-		<li>Relations can be partially applied, yielding another relation whose columns aren't bound to values given in the original application;</li>
+		<li>Relations can be partially applied, yielding the projection of the search for the rows with the given values in the corresponding columns onto the other columns;</li>
 		<li>A row of a single column decays to the value in that column;</li>
 		<li>A sum of a single row decays to that row; and</li>
 		<li>Unary relations correspond to column types.</li>
