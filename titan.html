@@ -61,12 +61,12 @@
 		<code>@</code><var>name</var>
 		</li>
 		<li>Numbers, defined by the regular expressions <var>number</var><br />
-		-<sup>?</sup><var>ndigit</var>(<var>digit</var> <sup>+</sup>(.<var>digit</var> <sup>+</sup>)<sup>?</sup>|(.<var>digit</var> <sup>+</sup>) <sup>?</sup>(<code>e-</code><sup>?</sup><var>ndigit</var> <var>digit</var> <sup>*</sup>)<sup>?</sup>)<br />
-		<code>0</code>(<code>b</code><var>bdigit</var><sup>+</sup>|<code>o</code><var>odigit</var><sup>+</sup>|<code>x</code><var>hdigit</var><sup>+</sup>)<br />
+		<code>-</code><sup>?</sup><var>ndigit</var>(<var>digit</var> <sup>+</sup>(<code>.</code><var>digit</var> <sup>+</sup>)<sup>?</sup>|(<code>.</code><var>digit</var> <sup>+</sup>)<sup>?</sup>(<code>e-</code><sup>?</sup><var>ndigit</var> <var>digit</var> <sup>*</sup>)<sup>?</sup>)<br />
+		<code>0</code>(<code>.</code><var>digit</var><sup>+</sup>|<code>b</code><var>bdigit</var><sup>+</sup>|<code>o</code><var>odigit</var><sup>+</sup>|<code>x</code><var>hdigit</var><sup>+</sup>)<br />
 		<code>'</code>((<code>\</code>|<code>'</code>)<sup>-</sup>|<code>\</code>(<code>\</code>|<code>'</code>))<code>'</code>
 		</li>
 		<li>Strings, defined by the regular expression <var>string</var><br />
-		<code>"</code>(<code>"</code><sup>-</sup>|<code>\</code>(<code>"</code>|<code>\</code>)) <sup>*</sup><code>"</code>
+		<code>"</code>(<code>"</code><sup>-</sup>|<code>\</code>(<code>"</code>|<code>\</code>))<sup>*</sup><code>"</code>
 		</li>
 		<li>Comments, defined by the regular expressions<br />
 		<code>\*</code>(<code>*\</code>)<sup>-</sup><code>*\</code><br />
@@ -77,7 +77,7 @@
 	<h4>Grammar</h4>
 	The full grammar of the Titan reference language is:<br />
 	<var>E</var> ::= | <var>A</var><var>E</var><br />
-	<var>A</var> ::= <var>name</var> | <var>variable</var> | <var>number</var> | <var>string</var> | [<var>A</var><var>E</var>] | {<var>A</var><var>E</var>} | (<var>E</var>)<br />
+	<var>A</var> ::= <var>name</var> | <var>variable</var> | <var>number</var> | <var>string</var> | <code>[</code><var>A</var><var>E</var><code>]</code> | <code>{</code><var>A</var><var>E</var><code>}</code> | <code>(</code><var>E</var><code>)</code><br />
 	Note that there are no reserved identifiers.
 
 
