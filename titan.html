@@ -35,15 +35,15 @@
 		<li><code>(gcd 111 259)</code> => <code>37</code></li>
 		<li><code>(gcd 111 259 37)</code> => <code>true</code></li>
 		<li><code>(gcd)</code> => <pre>{
-	[@x 0 @x]
-	[@x @y (gcd @y (% @x @y))]
+	[@_1 0 @_1]
+	[@_1 @_2 (gcd @_2 (% @_1 @_2))]
 }</pre>
 		</li>
 		<li><code>(gcd 111)</code> => <pre>{
 	[0  111]
-	[@y (gcd @y (% 111 @y))]
+	[@_2 (gcd @_2 (% 111 @_2))]
 }</pre></li>
-		<li><code>(gcd @x 259)</code> => <code>[@x (gcd 259 (% @x 259))]</code></li>
+		<li><code>(gcd @_1 259)</code> => <code>[@_1 (gcd 259 (% @_1 259))]</code></li>
 	</ul>
 
 	A brief summary of the language's grammar, taken from the upcoming design document, is provided below.
