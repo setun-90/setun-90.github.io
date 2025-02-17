@@ -22,7 +22,7 @@
 	Regarding the final point, a major intended objective is for implementations to be able to optimise a subset of the language enough to work in embedded programming.
 	</p>
 
-	<h3>Reference Language</h3>
+	<h3 id="lang">Reference Language</h3>
 	<p>Titan's reference language is extremely simple: conceptually, programs are relations specified as sums of rows, each row relating the values in its columns together. The major tricks added to this, however, are:
 	<ol>
 		<li>Relations can be partially applied, yielding the projection of the search for the rows with the given values in the corresponding columns onto the other columns;</li>
@@ -30,15 +30,19 @@
 		<li>A sum of a single row decays to that row; and</li>
 		<li>Unary relations correspond to column types.</li>
 	</ol>
-	Semantically, sums represent searches over rows, and rows represent patterns whose values are related. The following example factorial relation illustrates this succinctly:
+	Semantically, sums represent searches over rows, and rows represent patterns whose values are related. The following example implementation of the euclidean algorithm illustrates this succinctly:
 	<ul>
-		<li><code>(factorial 5)</code> => <code>120</code></li>
-		<li><code>(factorial 5 120)</code> => <code>True</code></li>
-		<li><code>(factorial)</code> => <pre>{
-	[0 1]
-	[@n (* @n (factorial (- @n 1)))]
+		<li><code>(euclid 111 259)</code> => <code>37</code></li>
+		<li><code>(euclid 111 259 37)</code> => <code>true</code></li>
+		<li><code>(euclid)</code> => <pre>{
+	[@x 0 @x]
+	[@x @y (euclid @y (% @x @y))]
 }</pre>
 		</li>
+		<li><code>(euclid 111)</code> => <pre>{
+	[0 111]
+	[@y (euclid @y (% 111 @y)]
+}</pre></li>
 	</ul>
 
 	A brief summary of the language's grammar, taken from the upcoming design document, is provided below.
