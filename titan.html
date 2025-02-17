@@ -30,7 +30,18 @@
 		<li>A sum of a single row decays to that row; and</li>
 		<li>Unary relations correspond to column types.</li>
 	</ol>
-	Semantically, sums represent searches over rows, and rows represent patterns whose values are related. A brief summary of the language's grammar, taken from the upcoming design document, is provided below.
+	Semantically, sums represent searches over rows, and rows represent patterns whose values are related. The following example factorial relation illustrates this succinctly:
+	<ul>
+		<li><code>(factorial 5)</code> => <code>120</code></li>
+		<li><code>(factorial 5 120)</code> => <code>True</code></li>
+		<li><code>(factorial)</code> => <pre>{
+	[0 1]
+	[@n (* @n (factorial (- @n 1)))]
+}</pre>
+		</li>
+	</ul>
+
+	A brief summary of the language's grammar, taken from the upcoming design document, is provided below.
 	</p>
 	<h4>Alphabet</h4>
 	The alphabet of the Titan reference language is in the Unicode 10 character set. Several subsets are named here for future reference:
@@ -98,5 +109,6 @@
 
 	<h3>Bootstrap Implementation</h3>
 	Titan's bootstrap implementation is code-named Chaos, after the root deity of the Greek Pantheon. An initial idea is to write it in Prolog, but Twelf might also be appropriate.
+
 </body>
 </html>

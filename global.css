@@ -3,7 +3,7 @@ body {
 	margin: 0 auto;
 	width: 80%;
 }
-code {
+code, pre {
 	font-size: 1.3em;
 }
 
