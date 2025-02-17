@@ -23,7 +23,7 @@
 	</p>
 
 	<h3 id="lang">Reference Language</h3>
-	<p>Titan's reference language is extremely simple: conceptually, programs are relations specified as sums of rows, each row relating the values in its columns together. The major tricks added to this, however, are:
+	<p>Titan's reference language is extremely simple: conceptually, programs are databases of relations specified as sums of rows, each row relating the values in its columns together. The major tricks added to this, however, are:
 	<ol>
 		<li>Relations can be partially applied, yielding the projection of the search for the rows with the given values in the corresponding columns onto the other columns;</li>
 		<li>A row of a single column decays to the value in that column;</li>
@@ -33,15 +33,15 @@
 	Semantically, sums represent searches over rows, and rows represent patterns whose values are related. The following outputs of an example implementation of the euclidean algorithm illustrate this succinctly:
 	<ul>
 		<li><code>(gcd 111 259)</code> => <code>37</code></li>
-		<li><code>(gcd 111 259 37)</code> => <code>true</code></li>
+		<li><code>(gcd 111 259 37)</code> => <code>True</code></li>
 		<li><code>(gcd)</code> => <pre>{
-	[@_1 0 @_1]
-	[@_1 @_2 (gcd @_2 (% @_1 @_2))]
+	[@_1  0    @_1]
+	[@_1  @_2  (gcd @_2 (% @_1 @_2))]
 }</pre>
 		</li>
 		<li><code>(gcd 111)</code> => <pre>{
-	[0  111]
-	[@_2 (gcd @_2 (% 111 @_2))]
+	[0    111]
+	[@_2  (gcd @_2 (% 111 @_2))]
 }</pre></li>
 		<li><code>(gcd @_1 259)</code> => <code>[@_1 (gcd 259 (% @_1 259))]</code></li>
 	</ul>
