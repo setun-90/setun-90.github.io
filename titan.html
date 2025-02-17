@@ -30,19 +30,20 @@
 		<li>A sum of a single row decays to that row; and</li>
 		<li>Unary relations correspond to column types.</li>
 	</ol>
-	Semantically, sums represent searches over rows, and rows represent patterns whose values are related. The following example implementation of the euclidean algorithm illustrates this succinctly:
+	Semantically, sums represent searches over rows, and rows represent patterns whose values are related. The following outputs of an example implementation of the euclidean algorithm illustrate this succinctly:
 	<ul>
-		<li><code>(euclid 111 259)</code> => <code>37</code></li>
-		<li><code>(euclid 111 259 37)</code> => <code>true</code></li>
-		<li><code>(euclid)</code> => <pre>{
+		<li><code>(gcd 111 259)</code> => <code>37</code></li>
+		<li><code>(gcd 111 259 37)</code> => <code>true</code></li>
+		<li><code>(gcd)</code> => <pre>{
 	[@x 0 @x]
-	[@x @y (euclid @y (% @x @y))]
+	[@x @y (gcd @y (% @x @y))]
 }</pre>
 		</li>
-		<li><code>(euclid 111)</code> => <pre>{
-	[0 111]
-	[@y (euclid @y (% 111 @y)]
+		<li><code>(gcd 111)</code> => <pre>{
+	[0  111]
+	[@y (gcd @y (% 111 @y))]
 }</pre></li>
+		<li><code>(gcd @x 259)</code> => <code>[@x (gcd 259 (% @x 259))]</code></li>
 	</ul>
 
 	A brief summary of the language's grammar, taken from the upcoming design document, is provided below.
