@@ -45,21 +45,13 @@
 		<li>is used by bash, so you can have fast feedback just by logging out and back in at the most; and</li>
 		<li>is used by Python and systemd, and thus has a <em>big</em> impact on system performance.</li>
 	</ol>
-	Other categories of Gentoo packages to test are:
-	<ul>
-		<li>General and text libraries like boost, libpcre, fribidi, icu, and gettext;</li>
-		<li>System libraries like libcap, pam and libseccomp;</li>
-		<li>Language implementations like Python, Ruby, Perl and Awk;</li>
-		<li>Utility programs like GNU Core Utilities, <code>tar</code>, and <code>grep</code> - yes, they are theoretically applications, but because the shell uses them in the manner of subroutines, they can be considered a sort of shell &quot;standard library&quot;.</li>
-		<li>Graphics libraries and programs, like the X server/Wayland, libdrm, Mesa and the window manager;</li>
-		<li>Scientific libraries like OpenCSG, LAPACK and BLAS; and</li>
-		<li>GUI libraries like GTK+ and Qt.</li>
-	</ul>
+	Another package I like to measure is <code>make</code>, as, despite being an application, Makefiles are essentially scripts written in a simple declarative language, so <code>make</code> can be treated as an interpreter.
 	The smarter ones may be preparing to ask me &quot;What about the kernel?&quot; I kept that for last because:
 	<ol>
 		<li>A buggy kernel <em>can</em> damage hardware, so you won't be spending time and money on just electricity in that case; and</li>
 		<li>The kernel behaves in rather strange ways when it comes to optimization: a seemingly reasonable flag (-funswitch-loops) on readline which sped both it and bash up slowed down my kernel. For as much as I am perhaps the most reckless CFLAGS tester out there, I still respect the kernel devs when it comes to their code.</li>
 	</ol>
+	To optimize the kernel, one should choose a command that preferably does <em>not</em> do system calls, as otherwise recompiling the kernel with the new flags will change the measurements afterwards.
 
 	<h3>Music in Noise</h3>
 	<p>On Linux, <code>perf</code> is literally the microscope of the optimizer. Do not use <code>time</code> for timing microoptimizations, as even if you manage to eliminate most variance from the reported time, you still won't get some vital metrics like cycles and prediction hit rates.<br />
