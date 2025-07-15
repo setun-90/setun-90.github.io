@@ -6,6 +6,9 @@ body {
 code, pre {
 	font-size: 1.3em;
 }
+pre {
+	white-space: pre-wrap;
+}
 
 td {
 	padding: 0 2em 0 0;
