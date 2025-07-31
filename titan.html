@@ -13,7 +13,7 @@
 	</div>
 	<h2>Foundations for the people</h2>
 	<h3>Synopsis</h3>
-	<p>Titan is a development platform for incremental optimisable search and enumeration, based directly on the foundations of mathematics. In Titan, programs are defined as relations between values, with semantics formally specified by a linear theory spanning all proof strengths from constructive to classical. For this, Titan defines:
+	<p>Titan is a development platform for incremental optimisable search and enumeration, based directly on the foundations of mathematics. In the Titan platform, values are specified as "extended patterns" of countable joins of meets, corresponding to sums of rows. An extended pattern is essentially a function which returns either an indicator function or another extended pattern, and matching corresponds to evaluating these extended patterns on terms. For this, Titan defines:
 	<ol>
 		<li>A <em>reference language</em> in which to express these rules;</li>
 		<li>A <em>standard library</em> by which to facilitate development; and</li>
@@ -27,14 +27,14 @@
 	</p>
 
 	<h3 id="lang">Reference Language</h3>
-	<p>Titan's reference language is extremely simple: conceptually, programs are databases of relations specified as sums of rows, each row relating the values in its columns together. The major tricks added to this, however, are:
+	<p>Titan's reference language is extremely simple and is designed to reflect the data model as closely as possible. The extended patterns of countable joins of meets correspond, roughly, to indicator functions of sets of rows. The major tricks added to this, however, are:
 	<ol>
 		<li>Relations can be partially applied, yielding the projection of the search for the rows with the given values in the corresponding columns onto the other columns;</li>
 		<li>A row of a single column decays to the value in that column;</li>
 		<li>A sum of a single row decays to that row; and</li>
 		<li>Unary relations correspond to column types.</li>
 	</ol>
-	Semantically, sums represent searches over rows, and rows represent patterns whose values are related. The following outputs of an example implementation of the euclidean algorithm illustrate this succinctly:
+	Semantically, a term is identified with its singleton, and pattern matching consists of applying the indicator function of a set representing a pattern to a term. The following outputs of an example implementation of the euclidean algorithm illustrate this succinctly:
 	<ul>
 		<li><code>(gcd 111 259)</code> => <code>37</code></li>
 		<li><code>(gcd 111 259 37)</code> => <code>[]</code></li>
