@@ -13,7 +13,7 @@
 	</div>
 	<h2>Foundations for the people</h2>
 	<h3>Synopsis</h3>
-	<p>Titan is a development platform for incremental optimisable search and enumeration, based directly on the foundations of mathematics. In the Titan platform, values are specified as "extended patterns" of countable joins of meets, corresponding to sums of rows. An extended pattern is essentially a function which returns either an indicator function or another extended pattern, and matching corresponds to evaluating these extended patterns on terms. For this, Titan defines:
+	<p>Titan is a development platform for incremental optimisable search and enumeration, based directly on formal ordered logic and the foundations of mathematics. In the Titan platform, values are specified as "extended patterns" of countable joins of meets, corresponding to sums of rows. An extended pattern is essentially a function which returns either an indicator function or another extended pattern, and matching corresponds to evaluating these extended patterns on terms. For this, Titan defines:
 	<ol>
 		<li>A <em>reference language</em> in which to express these rules;</li>
 		<li>A <em>standard library</em> by which to facilitate development; and</li>
@@ -29,7 +29,7 @@
 	<h3 id="lang">Reference Language</h3>
 	<p>Titan's reference language is extremely simple and is designed to reflect the data model as closely as possible. The extended patterns of countable joins of meets correspond, roughly, to indicator functions of relations consisting of sets of rows. The major tricks added to this, however, are:
 	<ol>
-		<li>Relations can be partially applied, yielding the projection of the search for the rows with the given values in the corresponding columns onto the other columns;</li>
+		<li>Relations can be partially applied, yielding the projection of the search for the rows with the given values in the corresponding columns onto the other columns (<em>selective projection</em>);</li>
 		<li>A row of a single column decays to the value in that column;</li>
 		<li>A sum of a single row decays to that row; and</li>
 		<li>Unary relations correspond to column types.</li>
@@ -106,13 +106,13 @@
 	<h3>Standard Library</h3>
 	<p>Titan's standard library is divided into three major parts: <em>Language</em>, <em>Environment</em>, and <em>Algorithms</em>. All definitions in the standard library are abstract data/negative types, meaning they are defined in terms of their projection relations. Only the <em>Language</em> part is mandatory, and the two other parts can be defined in terms of it.</p>
 	<h4>Language</h4>
-	<p>The <em>Language</em> part contains the abstract data types of the core constructs of the language.</p>
+	<p>The <em>Language</em> part supports the core constructs of the language and provides models of many domains of mathematics, from statistics to topology to geometry.</p>
 
 	<h4>Algorithms</h4>
-	<p>The <em>Algorithms</em> part contains the abstract data types for complex operations on the core constructs of the language.</p>
+	<p>The <em>Algorithms</em> part supports decision problems going all the way to the class RE.</p>
 
 	<h4>Environment</h4>
-	<p>The <em>Environment</em> part contains data types for interfacing with other systems.</p>
+	<p>The <em>Environment</em> part supports interaction with the real world, ranging from the underlying hardware/implementation to ontologies to the sciences.</p>
 
 
 	<h3>Reference Implementation</h3>
