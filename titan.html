@@ -13,7 +13,7 @@
 	</div>
 	<h2>Foundations for the people</h2>
 	<h3>Synopsis</h3>
-	<p>Titan is a development platform for incremental optimisable search and enumeration, based directly on formal ordered logic and the foundations of mathematics. In the Titan platform, values are specified as "extended patterns" of countable joins of meets, corresponding to sums of rows. An extended pattern is essentially a function which returns either an indicator function or another extended pattern, and matching corresponds to evaluating these extended patterns on terms. For this, Titan defines:
+	<p>Titan is a development platform for incremental optimisable search and enumeration, based directly on formal substructural logic and the foundations of mathematics. For this, Titan defines:
 	<ol>
 		<li>A <em>reference language</em> in which to express these rules;</li>
 		<li>A <em>standard library</em> by which to facilitate development; and</li>
@@ -26,15 +26,19 @@
 	</ol>
 	</p>
 
-	<h3 id="lang">Reference Language</h3>
-	<p>Titan's reference language is extremely simple and is designed to reflect the data model as closely as possible. The extended patterns of countable joins of meets correspond, roughly, to indicator functions of relations consisting of sets of rows. The major tricks added to this, however, are:
+	<h3 id="lang">Semantics and Reference Language</h3>
+	<p>Owing to the complexity of Titan's objectives, and the complexity of the foundations of mathematics in general, two semantics are given for the Titan Reference Language:
+	<ul>
+		<li>An informal semantics drawing from database theory; and</li>
+		<li>A formal denotational semantics (actually TBD, but likely to be based on formal topology).</li>
+	</ul>
+	Though separable, Titan's reference language and semantics were designed together to minimise complexity. In the Titan platform, programs and data are specified as <em>extended patterns</em> of sets of rows. An extended pattern is essentially a function which returns either an indicator function or another extended pattern, and terms are identified with their singletons, enabling them to match/filter as well. The major tricks added to this, however, are:
 	<ol>
 		<li>Relations can be partially applied, yielding the projection of the search for the rows with the given values in the corresponding columns onto the other columns (<em>selective projection</em>);</li>
-		<li>A row of a single column decays to the value in that column;</li>
-		<li>A sum of a single row decays to that row; and</li>
-		<li>Unary relations correspond to column types.</li>
+		<li>A row of a single column decays to the value in that column; and</li>
+		<li>A sum of a single row decays to that row.</li>
 	</ol>
-	Semantically, a term is identified with its singleton, and pattern matching consists of applying the indicator function of a set representing a pattern to a term. The following outputs of an example implementation of the euclidean algorithm illustrate this succinctly:
+	The following outputs of an example implementation of the euclidean algorithm illustrate this succinctly:
 	<ul>
 		<li><code>(gcd 111 259)</code> => <code>37</code></li>
 		<li><code>(gcd 111 259 37)</code> => <code>[]</code></li>
