@@ -28,6 +28,6 @@
 			-19.13417,-46.19398
 			" fill="#fff" />
 	</defs>
-	<rect width="400" height="400" fill="#003"/>
+	<rect width="400" height="400" fill="#004"/>
 	<use xlink:href="#etoile" transform="translate(200 200) scale(1.25)" />
 </svg>
